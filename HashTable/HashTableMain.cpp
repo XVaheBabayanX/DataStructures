@@ -134,7 +134,7 @@ int main() {
             cout << "Attempted to delete key : " << key << endl;
             break;
         case 6:
-            cout << "The Load Factor : " << hashTable.getTableLoadFactor() << endl;
+            cout << "The Load Factor : " << hashTable.getTableLoadFactor() << "%" << endl;
             if (hashTable.getTableLoadFactor() >= LOAD_FACTOR)
             {
                 cout << "Load factor exceeds 70%. Would you like to resize the hash table? (y/n): ";
