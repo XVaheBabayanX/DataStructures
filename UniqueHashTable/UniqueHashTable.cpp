@@ -1,4 +1,4 @@
-﻿#include "UniqueHashTable.h"
+#include "UniqueHashTable.h"
 
 HashTable::HashTable() : HashTable(DEFAULT_TABLE_SIZE) {}
 
