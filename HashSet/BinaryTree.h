@@ -10,17 +10,17 @@
 class Node
 {
 public:
-	Node(const size_t Bucket, const std::string Key = "", const double Data = 0, Node* Parent = nullptr, Node* Left = nullptr, Node* Right = nullptr) : _bucket(Bucket), _key(Key), _data(Data), _parent(Parent), _leftChild(Left), _rightChild(Right) {}
-	size_t _bucket = 0;
-	std::string _key = DefaultKey;
-	double _data = DefaultData;
+	Node(const std::string& Bucket, const std::string& Key, Node* Parent = nullptr, Node* Left = nullptr, Node* Right = nullptr)
+		: _bucket(Bucket), _key(Key), _parent(Parent), _leftChild(Left), _rightChild(Right) {}
+	std::string _bucket;
+	std::string _key;
 	Node* _parent = nullptr;
 	Node* _leftChild = nullptr;
 	Node* _rightChild = nullptr;
-	bool isDefault() const { return (_key == DefaultKey) && (_data == DefaultData); }
+
+	bool isDefault() const { return (_key == DefaultKey); }
 private:
 	const std::string DefaultKey = "";
-	const double DefaultData = 0;
 };
 
 class BinaryTree
@@ -35,12 +35,11 @@ private:
 public:
 	void clearTree(Node*);
 
-	bool Insert(const size_t, const std::string, const double);
-	bool Delete(const size_t);
-	Node* Search(const size_t) const;
-	bool Change(const size_t, const std::string, const double) const;
-	size_t MinimumBucket() const;
-	size_t MaximumBucket() const;
+	bool Insert(const std::string, const std::string);
+	bool Delete(const std::string);
+	Node* Search(const std::string) const;
+	std::string MinimumBucket() const;
+	std::string MaximumBucket() const;
 	Node* Minimum(Node*) const;
 	Node* Maximum(Node*) const;
 	Node* Successor(Node*) const;
@@ -62,9 +61,9 @@ public:
 	static std::vector<Node*> LevelOrderTraversal(Node*);
 	static void LevelOrderTraversal(Node*, std::vector<Node*>&);
 
-	std::vector<Node*> RangeSearch(size_t, size_t) const;
-	static std::vector<Node*> RangeSearch(Node*, size_t, size_t);
-	static void RangeSearch(Node*, size_t, size_t, std::vector<Node*>&);
+	std::vector<Node*> RangeSearch(std::string, std::string) const;
+	static std::vector<Node*> RangeSearch(Node*, std::string, std::string);
+	static void RangeSearch(Node*, std::string, std::string, std::vector<Node*>&);
 
 	std::string toString(const std::vector<Node*>&) const;
 	static std::string toString(std::vector<Node*>&);
@@ -72,11 +71,10 @@ public:
 	std::string toStringPreorder() const;
 	std::string toStringPostorder() const;
 	std::string toStringLevelOrder() const;
-	std::string toStringRange(size_t, size_t) const;
+	std::string toStringRange(std::string, std::string) const;
 
 	void balance();
 	static Node* buildBalancedTree(std::vector<Node*>&, int, int);
-	Node* buildBalancedTree(const std::vector<size_t>&, int, int);
 
 	void visualize() const;
 	void visualize(Node* node, std::string, bool) const;
@@ -92,18 +90,23 @@ public:
 	static size_t getDepth(Node*);
 
 	bool isPerfect() const;
-	static bool isPerfect(Node*, size_t);
-	static bool isPerfect(Node*);
+	static bool isPerfect(Node*, int, int);
 
+	bool isBalanced() const;
+	static int isBalanced(Node* node);
+
+	bool isComplete() const;
+	static bool isComplete(Node*);
 
 	bool isEmpty() { return _Root == nullptr; }
 	static bool isEmpty(Node* node) { return node == nullptr; }
 	static bool isLeaf(Node* node) { return (node->_leftChild == nullptr) && (node->_rightChild == nullptr); }
 
 private:
-	Node* CreateNode(const size_t Bucket, const std::string Key, const double Data) const { return new Node(Bucket, Key, Data); }
+	Node* CreateNode(const std::string Bucket, const std::string Key) const { return new Node(Bucket, Key); }
 
 private:
 	Node* _Root = nullptr;
 	size_t _nodes = 0;
+	const std::string DefaultKey = "";
 };
