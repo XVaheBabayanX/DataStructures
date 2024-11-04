@@ -1,4 +1,4 @@
-﻿#include "BinaryTree.h"
+#include "BinaryTree.h"
 #include <iostream>
 #include <string>
 
@@ -46,12 +46,16 @@ void instructions() {
         << "11 to get the depth of the tree\n"
         << "12 to balance the tree\n"
         << "13 to check if the tree is empty\n"
-        << "14 to check if the tree is perfect\n"
-        << "15 to visualize the tree\n"
-        << "16 to display the minimum key\n"
-        << "17 to display the maximum key\n"
-        << "18 to exit the program\n";  
+        << "14 to check if the tree is complete\n"
+        << "15 to check if the tree is perfect\n"
+        << "16 to check if the tree is balanced\n"
+        << "17 to visualize the tree\n"
+        << "18 to display the minimum key\n"
+        << "19 to display the maximum key\n"
+        << "20 to exit the program\n";  
 }
+
+const size_t CHOICE = 20;
 
 int main() {
     BinaryTree tree;
@@ -69,7 +73,7 @@ int main() {
             if (choice == 18) break;
         }
         else {
-            cout << "Invalid input. Please enter a number from 1 to 17: ";
+            cout << "Invalid choice. Please enter a number between 1 and " << CHOICE << " : ";
             continue;
         }
 
@@ -250,6 +254,18 @@ int main() {
         }
         case 14: {
             if (tree.isEmpty()) {
+                cout << "The tree is empty, cannot check it for completeness.\n";
+            }
+            else {
+                if (tree.isComplete())
+                    cout << "The tree is complete.\n";
+                else
+                    cout << "The tree is not complete.\n";
+            }
+            break;
+        }
+        case 15: {
+            if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot check it for perfection.\n";
             }
             else {
@@ -260,7 +276,19 @@ int main() {
             }
             break;
         }
-        case 15: {
+        case 16: {
+            if (tree.isEmpty()) {
+                cout << "The tree is empty, cannot check it for balance.\n";
+            }
+            else {
+                if (tree.isBalanced())
+                    cout << "The tree is balanced.\n";
+                else
+                    cout << "The tree is not balanced.\n";
+            }
+            break;
+        }
+        case 17: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot visualize.\n";
             }
@@ -270,7 +298,7 @@ int main() {
             }
             break;
         }
-        case 16: {
+        case 18: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot display minimum key.\n";
             }
@@ -279,7 +307,7 @@ int main() {
             }
             break;
         }
-        case 17: {
+        case 19: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot display maximum key.\n";
             }
