@@ -2,7 +2,7 @@
 
 BinaryTree::BinaryTree(const BinaryTree& other) : _Root(nullptr), _nodes(0) {
 	if (other._Root != nullptr) {
-		_Root = new Node(other._Root->_bucket, other._Root->_key, other._Root->_data);
+		_Root = new Node(other._Root->_bucket, other._Root->_key);
 		_nodes++;
 		copyTree(_Root, other._Root);
 	}
@@ -10,7 +10,7 @@ BinaryTree::BinaryTree(const BinaryTree& other) : _Root(nullptr), _nodes(0) {
 
 BinaryTree::BinaryTree(const Node* root) : _Root(nullptr), _nodes(0) {
 	if (root != nullptr) {
-		_Root = new Node(root->_bucket, root->_key, root->_data);
+		_Root = new Node(root->_bucket, root->_key);
 		_nodes++;
 		copyTree(_Root, root);
 	}
@@ -24,12 +24,12 @@ BinaryTree::~BinaryTree() {
 
 void BinaryTree::copyTree(Node* thisNode, const Node* otherNode) {
 	if (otherNode->_leftChild != nullptr) {
-		thisNode->_leftChild = new Node(otherNode->_leftChild->_bucket, otherNode->_leftChild->_key, otherNode->_leftChild->_data, thisNode);
+		thisNode->_leftChild = new Node(otherNode->_leftChild->_bucket, otherNode->_leftChild->_key, thisNode);
 		_nodes++;
 		copyTree(thisNode->_leftChild, otherNode->_leftChild);
 	}
 	if (otherNode->_rightChild != nullptr) {
-		thisNode->_rightChild = new Node(otherNode->_rightChild->_bucket, otherNode->_rightChild->_key, otherNode->_rightChild->_data, thisNode);
+		thisNode->_rightChild = new Node(otherNode->_rightChild->_bucket, otherNode->_rightChild->_key,thisNode);
 		_nodes++;
 		copyTree(thisNode->_rightChild, otherNode->_rightChild);
 	}
@@ -53,13 +53,13 @@ Node* BinaryTree::getRoot(Node* node) {
 	return Root;
 }
 
-bool BinaryTree::Insert(const size_t Bucket, const std::string Key, const double Data) {
+bool BinaryTree::Insert(const std::string Bucket, const std::string Key) {
 	if (isEmpty(_Root)) {
-		_Root = CreateNode(Bucket, Key, Data);
+		_Root = CreateNode(Bucket, Key);
 		_nodes++;
 		return true;
 	}
-	Node* NewNode = CreateNode(Bucket, Key, Data);
+	Node* NewNode = CreateNode(Bucket, Key);
 	Node* Current = _Root;
 	Node* Parent = nullptr;
 	while (Current != nullptr) {
@@ -75,7 +75,7 @@ bool BinaryTree::Insert(const size_t Bucket, const std::string Key, const double
 	return true;
 }
 
-bool BinaryTree::Delete(const size_t Bucket) {
+bool BinaryTree::Delete(const std::string Bucket) {
 	Node* TargetNode = Search(Bucket);
 	if (TargetNode == nullptr) return false;
 
@@ -131,7 +131,7 @@ bool BinaryTree::Delete(const size_t Bucket) {
 }
 
 
-Node* BinaryTree::Search(const size_t Bucket) const {
+Node* BinaryTree::Search(const std::string Bucket) const {
 	if (isEmpty(_Root)) return nullptr;
 	Node* Current = _Root;
 	while (Current != nullptr) {
@@ -142,24 +142,14 @@ Node* BinaryTree::Search(const size_t Bucket) const {
 	return nullptr;
 }
 
-bool BinaryTree::Change(const size_t Bucket, const std::string Key, const double Data) const {
-	Node* Target = Search(Bucket);
-	if (Target) 
-	{
-		Target->_key = Key;
-		Target->_data = Data;
-		return true;
-	}
-	return false;
-}
 
-size_t BinaryTree::MinimumBucket() const {
-	if (isEmpty(_Root)) return 0;
+std::string BinaryTree::MinimumBucket() const {
+	if (isEmpty(_Root)) return std::string(DefaultKey);
 	return Minimum(_Root)->_bucket;
 }
 
-size_t BinaryTree::MaximumBucket() const {
-	if (isEmpty(_Root)) return 0;
+std::string BinaryTree::MaximumBucket() const {
+	if (isEmpty(_Root)) return std::string(DefaultKey);
 	return Maximum(_Root)->_bucket;
 }
 
@@ -299,12 +289,12 @@ std::vector<Node*> BinaryTree::LevelOrderTraversal(Node* node) {
 	return result;
 }
 
-void BinaryTree::RangeSearch(Node* node, size_t low, size_t high, std::vector<Node*>& result) {
+void BinaryTree::RangeSearch(Node* node, std::string low, std::string high, std::vector<Node*>& result) {
 	if (node == nullptr) return;
 	BinaryTree tree(node);
 
-	size_t minValue = tree.Minimum(node)->_bucket;
-	size_t maxValue = tree.Maximum(node)->_bucket;
+	std::string minValue = tree.Minimum(node)->_bucket;
+	std::string maxValue = tree.Maximum(node)->_bucket;
 
 	if (high < minValue || low > maxValue) return;
 
@@ -319,13 +309,13 @@ void BinaryTree::RangeSearch(Node* node, size_t low, size_t high, std::vector<No
 	}
 }
 
-std::vector<Node*> BinaryTree::RangeSearch(size_t low, size_t high) const {
+std::vector<Node*> BinaryTree::RangeSearch(std::string low, std::string high) const {
 	std::vector<Node*> result;
 	RangeSearch(_Root, low, high, result);
 	return result;
 }
 
-std::vector<Node*> BinaryTree::RangeSearch(Node* node, size_t low, size_t high) {
+std::vector<Node*> BinaryTree::RangeSearch(Node* node, std::string low, std::string high) {
 	std::vector<Node*> result;
 	RangeSearch(node, low, high, result);
 	return result;
@@ -377,25 +367,9 @@ std::string BinaryTree::toStringLevelOrder() const {
 	return toString(nodes);
 }
 
-std::string BinaryTree::toStringRange(size_t low, size_t high) const {
+std::string BinaryTree::toStringRange(std::string low, std::string high) const {
 	std::vector<Node*> nodes = RangeSearch(low, high);
 	return toString(nodes);
-}
-
-Node* BinaryTree::buildBalancedTree(const std::vector<size_t>& buckets, int start, int end) {
-	if (start > end) {
-		return nullptr;
-	}
-
-	int mid = (start + end) / 2;
-	Node* node = new Node(buckets[mid]);
-	node->_leftChild = buildBalancedTree(buckets, start, mid - 1);
-	node->_rightChild = buildBalancedTree(buckets, mid + 1, end);
-
-	if (node->_leftChild) node->_leftChild->_parent = node;
-	if (node->_rightChild) node->_rightChild->_parent = node;
-
-	return node;
 }
 
 Node* BinaryTree::buildBalancedTree(std::vector<Node*>& nodes, int start, int end) {
@@ -456,33 +430,64 @@ size_t BinaryTree::getDepth() const {
 	return getDepth(_Root);
 }
 
-bool BinaryTree::isPerfect() const
-{
-	return isPerfect(_Root, _nodes);
+bool BinaryTree::isPerfect() const {
+	return isPerfect(_Root, static_cast<int>(getDepth(_Root)), 0);
 }
 
-bool BinaryTree::isPerfect(Node* node, size_t nodes)
-{
+bool BinaryTree::isPerfect(Node* node, int depth, int level) {
 	if (node == nullptr)
 		return true;
-	else if (isLeaf(node))
-		return true;
-	else
-		return nodes == (pow(2, (getDepth(node)))) - 1;
-	return false;
+	if (isLeaf(node))
+		return (level == depth - 1);
+	if (node->_leftChild == nullptr || node->_rightChild == nullptr)
+		return false;
+	return isPerfect(node->_leftChild, depth, level + 1) && isPerfect(node->_rightChild, depth, level + 1);
 }
 
-bool BinaryTree::isPerfect(Node* node)
-{
+bool BinaryTree::isBalanced() const {
+	return isBalanced(_Root) != -1;
+}
+
+int BinaryTree::isBalanced(Node* node) {
+	if (node == nullptr)
+		return 0;
+
+	int leftHeight = isBalanced(node->_leftChild);
+	if (leftHeight == -1) return -1; 
+
+	int rightHeight = isBalanced(node->_rightChild);
+	if (rightHeight == -1) return -1; 
+	if (abs(leftHeight - rightHeight) > 1)
+		return -1; 
+	return std::max(leftHeight, rightHeight) + 1;
+}
+
+bool BinaryTree::isComplete() const {
+	return isComplete(_Root);
+}
+
+bool BinaryTree::isComplete(Node* node) {
 	if (node == nullptr)
 		return true;
-	else if (isLeaf(node))
-		return true;
-	else {
-		size_t nodes = getNodeCount(node);
-		return nodes == (pow(2, (getDepth(node)))) - 1;
+
+	std::queue<Node*> queue;
+	queue.push(node);
+	bool reachedEnd = false;
+
+	while (!queue.empty()) {
+		Node* current = queue.front();
+		queue.pop();
+
+		if (current == nullptr) {
+			reachedEnd = true;
+		}
+		else {
+			if (reachedEnd) return false;
+
+			queue.push(current->_leftChild);
+			queue.push(current->_rightChild);
+		}
 	}
-	return false;
+
+	return true;
 }
-
-
