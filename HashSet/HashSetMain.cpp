@@ -52,6 +52,7 @@ int main() {
         cin >> input;
         if (isNumber(input)) {
             choice = std::stoi(input);
+            if (choice == CHOICE) break;
         }
         else {
             cout << "Invalid choice. Please enter a number between 1 and " << CHOICE << " : ";
