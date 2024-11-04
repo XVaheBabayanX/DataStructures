@@ -70,7 +70,7 @@ int main() {
 
         if (isPositiveNumber(input)) {
             choice = std::stoi(input);
-            if (choice == 18) break;
+            if (choice == CHOICE) break;
         }
         else {
             cout << "Invalid choice. Please enter a number between 1 and " << CHOICE << " : ";
