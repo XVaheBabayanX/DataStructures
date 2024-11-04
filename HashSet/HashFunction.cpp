@@ -14,18 +14,21 @@ void HashFunction::setPrime(size_t prime)
     Prime = (isPrime(prime)) ? prime : DEFAULT_PRIME;
 }
 
-size_t HashFunction::RollingHash(const std::string& key, size_t tableSize) const
+std::string HashFunction::RollingHash(const std::string& key) const
 {
     size_t hash = 0;
 
     for (char c : key) {
-        hash = (hash * Prime + c) % tableSize;
+        hash = (hash * Prime + c);
     }
 
-    return hash;
+    std::ostringstream oss;
+    oss << std::hex << std::setw(hashLength) << std::setfill('0') << hash;
+    std::string hashString = oss.str();
+    return hashString.substr(0, hashLength);
 }
 
-size_t HashFunction::CityHash(const std::string& key, size_t tableSize) const
+std::string HashFunction::CityHash(const std::string& key) const
 {
     size_t hash = 0;
     size_t prime1 = 0x9e3779b1;
@@ -36,10 +39,15 @@ size_t HashFunction::CityHash(const std::string& key, size_t tableSize) const
         hash = (hash * prime1) ^ ((hash >> 27) * prime2);
     }
 
-    return hash % tableSize;
+    std::ostringstream oss;
+    oss << std::hex << std::setw(hashLength) << std::setfill('0') << hash;
+
+    std::string hashString = oss.str();
+    return hashString.substr(0, hashLength); 
 }
 
-size_t HashFunction::FNV1a(const std::string& key, size_t tableSize) const
+
+std::string HashFunction::FNV1a(const std::string& key) const
 {
     const size_t fnvPrime = 16777619;
     size_t hash = 2166136261;
@@ -49,12 +57,17 @@ size_t HashFunction::FNV1a(const std::string& key, size_t tableSize) const
         hash *= fnvPrime;
     }
 
-    return hash % tableSize;
+    std::ostringstream oss;
+    oss << std::hex << std::setw(hashLength) << std::setfill('0') << hash;
+
+    std::string hashString = oss.str();
+    return hashString.substr(0, hashLength);  
 }
 
-size_t HashFunction::MurmurHash(const std::string& key, size_t tableSize) const
+
+std::string HashFunction::MurmurHash(const std::string& key) const
 {
-    const size_t seed = 0x9747b28c;  
+    const size_t seed = 0x9747b28c;
     size_t hash = seed;
 
     const size_t c1 = 0xcc9e2d51;
@@ -63,7 +76,7 @@ size_t HashFunction::MurmurHash(const std::string& key, size_t tableSize) const
     for (char c : key) {
         size_t k = static_cast<size_t>(c);
         k *= c1;
-        k = (k << 15) | (k >> (32 - 15));  
+        k = (k << 15) | (k >> (32 - 15)); 
         k *= c2;
 
         hash ^= k;
@@ -78,8 +91,13 @@ size_t HashFunction::MurmurHash(const std::string& key, size_t tableSize) const
     hash *= 0xc2b2ae35;
     hash ^= (hash >> 16);
 
-    return hash % tableSize;
+    std::ostringstream oss;
+    oss << std::hex << std::setw(8) << std::setfill('0') << hash;
+
+    std::string hashString = oss.str();
+    return hashString.substr(0, hashLength);
 }
+
 
 
 bool HashFunction::isPrime(size_t num)
