@@ -92,9 +92,13 @@ public:
 	static size_t getDepth(Node*);
 
 	bool isPerfect() const;
-	static bool isPerfect(Node*, size_t);
-	static bool isPerfect(Node*);
+	static bool isPerfect(Node*, int, int);
 
+	bool isBalanced() const;
+	static int isBalanced(Node* node);
+
+	bool isComplete() const;
+	static bool isComplete(Node*);
 
 	bool isEmpty() { return _Root == nullptr; }
 	static bool isEmpty(Node* node) { return node == nullptr; }
