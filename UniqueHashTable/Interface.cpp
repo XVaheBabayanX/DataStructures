@@ -257,13 +257,14 @@ int main() {
             else
             {
                 hashTable.Optimize();
+                cout << "The HashTable was optimazed.\n";
             }
             break;
         default:
             cout << "Invalid choice. Try again.\n";
             break;
         }
-        if (hashTable.getTableLoadFactor() == 100.0)
+        if (hashTable.getTableLoadFactor() >= 100.0)
         {
             cout << "HashTable is full. Would you like to resize the hash table,continue or exit? (resize/r/1 or continue/c/2 or exit/e/3): ";
             cin >> input;
