@@ -1,4 +1,4 @@
-﻿#include "BinaryTree.h"
+#include "BinaryTree.h"
 
 BinaryTree::BinaryTree(const BinaryTree& other) : _Root(nullptr), _nodes(0) {
 	if (other._Root != nullptr) {
@@ -40,6 +40,7 @@ void BinaryTree::clearTree(Node* node) {
 	clearTree(node->_leftChild);
 	clearTree(node->_rightChild);
 	delete node;
+	node = nullptr;
 }
 
 Node* BinaryTree::getRoot(Node* node) {
@@ -428,33 +429,64 @@ int BinaryTree::getDepth() const {
 	return getDepth(_Root);
 }
 
-bool BinaryTree::isPerfect() const
-{
-	return isPerfect(_Root, _nodes);
+bool BinaryTree::isPerfect() const {
+	return isPerfect(_Root, static_cast<int>(getDepth(_Root)), 0);
 }
 
-bool BinaryTree::isPerfect(Node* node, size_t nodes)
-{
+bool BinaryTree::isPerfect(Node* node, int depth, int level) {
 	if (node == nullptr)
 		return true;
-	else if (isLeaf(node))
-		return true;
-	else
-		return nodes == (pow(2, (getDepth(node)))) - 1;
-	return false;
+	if (isLeaf(node))
+		return (level == depth - 1);
+	if (node->_leftChild == nullptr || node->_rightChild == nullptr)
+		return false;
+	return isPerfect(node->_leftChild, depth, level + 1) && isPerfect(node->_rightChild, depth, level + 1);
 }
 
-bool BinaryTree::isPerfect(Node* node)
-{
+bool BinaryTree::isBalanced() const {
+	return isBalanced(_Root) != -1;
+}
+
+int BinaryTree::isBalanced(Node* node) {
+	if (node == nullptr)
+		return 0;
+
+	int leftHeight = isBalanced(node->_leftChild);
+	if (leftHeight == -1) return -1;
+
+	int rightHeight = isBalanced(node->_rightChild);
+	if (rightHeight == -1) return -1;
+	if (abs(leftHeight - rightHeight) > 1)
+		return -1;
+	return std::max(leftHeight, rightHeight) + 1;
+}
+
+bool BinaryTree::isComplete() const {
+	return isComplete(_Root);
+}
+
+bool BinaryTree::isComplete(Node* node) {
 	if (node == nullptr)
 		return true;
-	else if (isLeaf(node))
-		return true;
-	else {
-		size_t nodes = getNodeCount(node);
-		return nodes == (pow(2, (getDepth(node)))) - 1;
+
+	std::queue<Node*> queue;
+	queue.push(node);
+	bool reachedEnd = false;
+
+	while (!queue.empty()) {
+		Node* current = queue.front();
+		queue.pop();
+
+		if (current == nullptr) {
+			reachedEnd = true;
+		}
+		else {
+			if (reachedEnd) return false; 
+
+			queue.push(current->_leftChild);
+			queue.push(current->_rightChild);
+		}
 	}
-	return false;
+
+	return true;
 }
-
-
