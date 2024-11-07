@@ -22,6 +22,9 @@ public:
     T top() const;
     bool empty() const;
 
+    void visualize() const;
+    void visualizeNode(size_t index, std::string prefix, bool isLeft) const;
+
 protected:
     void heapifyDown(size_t i);
     void heapifyUp(size_t i);
@@ -76,6 +79,23 @@ void Heap<T>::heapifyUp(size_t i) {
     while (i != 0 && compare(heap[i], heap[parent(i)])) {
         std::swap(heap[i], heap[parent(i)]);
         i = parent(i);
+    }
+}
+
+template<typename T>
+void Heap<T>::visualize() const {
+    visualizeNode(0, "", false);
+}
+
+template<typename T>
+void Heap<T>::visualizeNode(size_t index, std::string prefix, bool isLeft) const {
+    if (index < heap.size()) {
+        std::cout << prefix;
+        std::cout << (isLeft ? "|-- " : "\\-- ");
+        std::cout << heap[index] << std::endl;
+
+        visualizeNode(left(index), prefix + (isLeft ? "|   " : "    "), true);
+        visualizeNode(right(index), prefix + (isLeft ? "|   " : "    "), false);
     }
 }
 
