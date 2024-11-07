@@ -1,11 +1,11 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 #include <memory>
 #include "PriorityQueue.h" 
 
 using namespace std;
 
-const int CHOICE = 6; 
+const int CHOICE = 7; 
 
 bool isNumber(const string& str) {
     if (str.empty()) return false;
@@ -32,7 +32,8 @@ void instructions() {
         << " 3 to display the top element of the PriorityQueue\n"
         << " 4 to check if the PriorityQueue is empty\n"
         << " 5 to check the type of the PriorityQueue (Ascending/Descending)\n"
-        << " 6 to exit\n";
+        << " 6 to visualize the PriorityQueue\n"
+        << " 7 to exit\n";
 }
 
 template<typename T>
@@ -91,6 +92,15 @@ void processQueueOperations(unique_ptr<PriorityQueue<T>>& pq) {
             cout << "The type of the PriorityQueue is: " << pq->type() << "\n";
             break;
 
+        case 6:
+            if (!pq->empty()) {
+                cout << "PriorityQueue\n";
+                pq->visualize();
+            }
+            else {
+                cout << "PriorityQueue is empty!\n";
+            }
+            break;
         default:
             cout << "Invalid choice. Please try again.\n";
             break;
