@@ -27,6 +27,10 @@ public:
         return heap->empty();
     }
 
+    void visualize() const {
+        heap->visualize();
+    }
+
     std::string type() const {
         if (dynamic_cast<MinHeap<T>*>(heap.get())) {
             return "Ascending Queue";
@@ -39,4 +43,3 @@ public:
         }
     }
 };
-
