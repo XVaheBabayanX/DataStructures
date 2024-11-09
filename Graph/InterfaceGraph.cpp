@@ -1,4 +1,4 @@
-﻿#include "Graph.h"
+#include "Graph.h"
 #include <iostream>
 #include <string>
 
@@ -29,7 +29,7 @@ bool isDouble(const std::string& str) {
     return true;
 }
 
-bool isNumber(const std::string& str) {
+bool isWholeNumber(const std::string& str) {
     for (char c : str) {
         if (!isdigit(c)) {
             return false;
@@ -65,7 +65,7 @@ int main() {
 
     cout << "Enter the initial number of vertices in the graph: ";
     cin >> input;
-    while (!isNumber(input) || (numVertices = std::stoul(input)) < 1) {
+    while (!isWholeNumber(input) || (numVertices = std::stoul(input)) < 1) {
         cout << "Number of vertices must be at least 1. Please enter a valid number: ";
         cin >> input;
     }
@@ -83,7 +83,7 @@ int main() {
     while (true) {
         cin >> input;
 
-        if (isNumber(input)) {
+        if (isWholeNumber(input)) {
             choice = std::stoi(input);
             if (choice == CHOICE) break;
         }
@@ -104,7 +104,7 @@ int main() {
             }
             cout << "Enter the vertex to remove: ";
             cin >> input;
-            while (!isNumber(input) || (u = std::stoul(input)) >= graph.getVerticesCount()) {
+            while (!isWholeNumber(input) || (u = std::stoul(input)) >= graph.getVerticesCount()) {
                 cout << "Invalid vertex. Please enter a valid vertex to remove: ";
                 cin >> input;
             }
@@ -118,14 +118,14 @@ int main() {
             }
             cout << "Enter the starting vertex: ";
             cin >> input;
-            while (!isNumber(input) || (u = std::stoul(input)) >= graph.getVerticesCount()) {
+            while (!isWholeNumber(input) || (u = std::stoul(input)) >= graph.getVerticesCount()) {
                 cout << "Invalid vertex. Please enter a valid starting vertex: ";
                 cin >> input;
             }
 
             cout << "Enter the ending vertex: ";
             cin >> input;
-            while (!isNumber(input) || (v = std::stoul(input)) >= graph.getVerticesCount()) {
+            while (!isWholeNumber(input) || (v = std::stoul(input)) >= graph.getVerticesCount()) {
                 cout << "Invalid vertex. Please enter a valid ending vertex: ";
                 cin >> input;
             }
@@ -176,13 +176,13 @@ int main() {
             }
             cout << "Enter the starting vertex: ";
             cin >> input;
-            while (!isNumber(input) || (u = std::stoul(input)) >= graph.getVerticesCount()) {
+            while (!isWholeNumber(input) || (u = std::stoul(input)) >= graph.getVerticesCount()) {
                 cout << "Invalid vertex. Please enter a valid starting vertex: ";
                 cin >> input;
             }
             cout << "Enter the ending vertex: ";
             cin >> input;
-            while (!isNumber(input) || (v = std::stoul(input)) >= graph.getVerticesCount()) {
+            while (!isWholeNumber(input) || (v = std::stoul(input)) >= graph.getVerticesCount()) {
                 cout << "Invalid vertex. Please enter a valid ending vertex: ";
                 cin >> input;
             }
@@ -198,13 +198,13 @@ int main() {
             }
             cout << "Enter the starting vertex: ";
             cin >> input;
-            while (!isNumber(input) || (u = std::stoul(input)) >= graph.getVerticesCount()) {
+            while (!isWholeNumber(input) || (u = std::stoul(input)) >= graph.getVerticesCount()) {
                 cout << "Invalid vertex. Please enter a valid starting vertex: ";
                 cin >> input;
             }
             cout << "Enter the ending vertex: ";
             cin >> input;
-            while (!isNumber(input) || (v = std::stoul(input)) >= graph.getVerticesCount()) {
+            while (!isWholeNumber(input) || (v = std::stoul(input)) >= graph.getVerticesCount()) {
                 cout << "Invalid vertex. Please enter a valid ending vertex: ";
                 cin >> input;
             }
@@ -229,13 +229,13 @@ int main() {
             }
             cout << "Enter the starting vertex: ";
             cin >> input;
-            while (!isNumber(input) || (u = std::stoul(input)) >= graph.getVerticesCount()) {
+            while (!isWholeNumber(input) || (u = std::stoul(input)) >= graph.getVerticesCount()) {
                 cout << "Invalid vertex. Please enter a valid starting vertex: ";
                 cin >> input;
             }
             cout << "Enter the ending vertex: ";
             cin >> input;
-            while (!isNumber(input) || (v = std::stoul(input)) >= graph.getVerticesCount()) {
+            while (!isWholeNumber(input) || (v = std::stoul(input)) >= graph.getVerticesCount()) {
                 cout << "Invalid vertex. Please enter a valid ending vertex: ";
                 cin >> input;
             }
