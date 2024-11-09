@@ -20,7 +20,7 @@ void DoublyLinkedList::clear() {
     _count = 0;  
 }
 
-void DoublyLinkedList::insertAtFront(const size_t vertex, const int weight)
+void DoublyLinkedList::insertAtFront(const size_t vertex, const double weight)
 {
     ListNode* newNode = createNode(vertex, weight, nullptr, _firstPtr);
 
@@ -34,7 +34,7 @@ void DoublyLinkedList::insertAtFront(const size_t vertex, const int weight)
     _count++;
 }
 
-void DoublyLinkedList::insertAtBack(const size_t vertex, const int weight)
+void DoublyLinkedList::insertAtBack(const size_t vertex, const double weight)
 {
     ListNode* newNode = createNode(vertex, weight, _lastPtr, nullptr);
 
@@ -48,7 +48,7 @@ void DoublyLinkedList::insertAtBack(const size_t vertex, const int weight)
     _count++;
 }
 
-bool DoublyLinkedList::insertAtIndex(const size_t index, const size_t vertex, const int weight)
+bool DoublyLinkedList::insertAtIndex(const size_t index, const size_t vertex, const double weight)
 {
     if (index < 0 || index > _count)
         return false;
@@ -210,4 +210,18 @@ void DoublyLinkedList::print() const
         currentPtr = currentPtr->_nextPtr;
     }
     cout << endl;
+}
+
+double DoublyLinkedList::getWeightAtIndex(const size_t index) const
+{
+    if (index >= _count)
+        throw out_of_range("Index out of range");
+
+    ListNode* current = _firstPtr;
+    for (size_t i = 0; i < index; ++i)
+    {
+        current = current->_nextPtr;
+    }
+
+    return current->_weight;
 }
