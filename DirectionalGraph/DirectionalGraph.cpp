@@ -1,33 +1,59 @@
-﻿#include "DirectionalGraph.h"
+#include "DirectionalGraph.h"
 
-DirectionalGraph::DirectionalGraph(size_t vertices) : vertices(vertices), adjList(vertices) {}
+DirectionalGraph::DirectionalGraph(size_t vertices) : _vertices(vertices), _edges(0), adjList(vertices) {}
 
 DirectionalGraph::~DirectionalGraph() {}
 
-void DirectionalGraph::addEdge(size_t u, size_t v, int weight)
+void DirectionalGraph::addEdge(size_t u, size_t v, double weight)
 {
-    if (u < vertices && v < vertices)
+    if (u < _vertices && v < _vertices)
     {
         if (hasEdge(u, v)) {
             std::cout << "Edge already exists from vertex " << u << " to vertex " << v << ".\n";
         }
         else {
-            adjList[u].insertAtBack(v, weight);  
+            adjList[u].insertAtBack(v, weight);
+            _edges++;
         }
     }
 }
 
 bool DirectionalGraph::removeEdge(size_t u, size_t v)
 {
-    if (u >= vertices || v >= vertices)
+    if (u >= _vertices || v >= _vertices)
         return false;
 
-    return adjList[u].removeElement(v); 
+    bool removedFromU = adjList[u].removeElement(v);
+
+    if (removedFromU) {
+        _edges--;
+        return true;
+    }
+    return false;
+}
+
+bool DirectionalGraph::changeEdge(size_t u, size_t v, double newWeight)
+{
+    if (u >= _vertices || v >= _vertices)
+        return false;  
+
+    ListNode* current = adjList[u].getFirstPtr();
+    while (current != nullptr)
+    {
+        if (current->_vertex == v)
+        {
+            current->_weight = newWeight;  
+            return true;
+        }
+        current = current->_nextPtr;
+    }
+
+    return false;  
 }
 
 bool DirectionalGraph::hasEdge(size_t u, size_t v) const
 {
-    if (u >= vertices)
+    if (u >= _vertices)
         return false;
 
     ListNode* current = adjList[u].getFirstPtr();
@@ -39,6 +65,23 @@ bool DirectionalGraph::hasEdge(size_t u, size_t v) const
     }
 
     return false;
+}
+
+double DirectionalGraph::getWeight(size_t u, size_t v) const
+{
+    if (u >= _vertices)
+        throw out_of_range("Vertex 'u' is out of range");
+
+    ListNode* current = adjList[u].getFirstPtr();
+    while (current != nullptr)
+    {
+        if (current->_vertex == v)
+            return current->_weight;
+
+        current = current->_nextPtr;
+    }
+
+    throw runtime_error("Edge does not exist");
 }
 
 void DirectionalGraph::printGraph() {
@@ -84,10 +127,10 @@ bool DirectionalGraph::detectCycleUtil(size_t v, std::vector<bool>& visited, std
 }
 
 bool DirectionalGraph::detectCycle() {
-    std::vector<bool> visited(vertices, false);
-    std::vector<bool> recursionStack(vertices, false);
+    std::vector<bool> visited(_vertices, false);
+    std::vector<bool> recursionStack(_vertices, false);
 
-    for (size_t i = 0; i < vertices; ++i) {
+    for (size_t i = 0; i < _vertices; ++i) {
         if (detectCycleUtil(i, visited, recursionStack)) {
             return true;
         }
@@ -98,26 +141,26 @@ bool DirectionalGraph::detectCycle() {
 void DirectionalGraph::addVertex()
 {
     adjList.push_back(DoublyLinkedList());
-    vertices++;
+    _vertices++;
 }
 
 void DirectionalGraph::removeVertex(size_t v)
 {
-    if (v >= vertices)
+    if (v >= _vertices)
         return;
 
     adjList[v].clear();
 
-    for (size_t i = 0; i < vertices; ++i) {
+    for (size_t i = 0; i < _vertices; ++i) {
         if (i != v) {
             adjList[i].removeElement(v);
         }
     }
 
     adjList.erase(adjList.begin() + v);
-    vertices--;
+    _vertices--;
 
-    for (size_t i = 0; i < vertices; ++i) {
+    for (size_t i = 0; i < _vertices; ++i) {
         ListNode* current = adjList[i].getFirstPtr();
         while (current != nullptr) {
             if (current->_vertex > v) {
