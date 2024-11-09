@@ -9,19 +9,26 @@ public:
     BidirectionalGraph(size_t vertices);
     ~BidirectionalGraph();
 
-    void addEdge(size_t u, size_t v, int weight);
-    bool removeEdge(size_t u, size_t v);
-    bool hasEdge(size_t u, size_t v) const;
-    void printGraph();
-
-    bool detectCycle();
-    bool detectCycleUtil(size_t v, std::vector<bool>& visited, int parent);
-
     void addVertex();
     void removeVertex(size_t v);
-    size_t getVertexCount() const { return vertices; }
+    size_t getVerticesCount() const { return _vertices; }
+
+    void addEdge(size_t u, size_t v, double weight);
+    bool removeEdge(size_t u, size_t v);
+    bool changeEdge(size_t u, size_t v, double newWeight);
+    bool hasEdge(size_t u, size_t v) const;
+    double getWeight(size_t u, size_t v) const;
+    size_t getEdgesCount() const { return _edges; }
+
+    void printGraph();
+    bool isEmpty() const { return _vertices == 0; }
+    bool isConnected() const { return _edges > 0; }
+
+    bool detectCycle();
+    bool detectCycleUtil(size_t v, std::vector<bool>& visited, double parent);
 
 private:
     std::vector<DoublyLinkedList> adjList;
-    size_t vertices;
+    size_t _vertices;
+    size_t _edges;
 };
