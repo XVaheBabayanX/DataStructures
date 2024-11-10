@@ -48,16 +48,18 @@ void instructions() {
         << " 6 to search for an edge\n"
         << " 7 to get the number of vertices\n"
         << " 8 to get the number of edges\n"
-        << " 9 to check for cycles\n"
-        << "10 to check for contour\n"
-        << "11 to check for loop\n"
-        << "12 to get the list of vertices with a loop\n"
-        << "13 to print the graph\n"
-        << "14 to print the adjacency matrix\n"
-        << "15 to end\n";
+        << " 9 to get the outgoing edges\n"
+        << "10 to get the incoming edges\n"
+        << "11 to check for cycles\n"
+        << "12 to check for contour\n"
+        << "13 to check for loop\n"
+        << "14 to get the list of vertices with a loop\n"
+        << "15 to print the graph\n"
+        << "16 to print the adjacency matrix\n"
+        << "17 to end\n";
 }
 
-const size_t CHOICE = 15;
+const size_t CHOICE = 17;
 
 int main() {
     size_t numVertices;
@@ -76,6 +78,8 @@ int main() {
     size_t u, v;
     double weight;
     vector<size_t> loops;
+    vector<size_t> outgoingVertices;
+    vector<size_t> incomingVertices;
 
     instructions();
     cout << "What do you want to do? ";
@@ -262,19 +266,65 @@ int main() {
             cout << "Number of edges in the graph: " << graph.getEdgesCount() << ".\n";
             break;
         case 9:
-            cout << (graph.detectCycle() ? "The graph contains a cycle.\n" : "No cycle detected in the graph.\n");
+            if (!graph.isConnected()) {
+                cout << "Graph is not connected.\n";
+                break;
+            }
+            cout << "Enter the vertex to get the outgoing edges: ";
+            cin >> input;
+            while (!isWholeNumber(input) || (u = std::stoul(input)) >= graph.getVerticesCount()) {
+                cout << "Invalid vertex. Please enter a valid vertex to get the outgoing edges: ";
+                cin >> input;
+            }
+            outgoingVertices =  graph.getOutgoingEdges(u);
+            if (graph.getOutgoingEdgesCount(u) == 0)
+            {
+                cout << "Vertex " << u << " has no outgoing edges.\n";
+                break;
+            }
+            cout << "Vertex " << u << " has " << graph.getOutgoingEdgesCount(u) << " outgoing edges to these vertices: ";
+            for (size_t vertice : outgoingVertices) {
+                cout << vertice << " ";
+            }
+            cout << endl;
             break;
         case 10:
-            cout << (graph.detectСontour() ? "The graph contains a contour.\n" : "No contour detected in the graph.\n");
+            if (!graph.isConnected()) {
+                cout << "Graph is not connected.\n";
+                break;
+            }
+            cout << "Enter the vertex to get the incoming edges: ";
+            cin >> input;
+            while (!isWholeNumber(input) || (u = std::stoul(input)) >= graph.getVerticesCount()) {
+                cout << "Invalid vertex. Please enter a valid vertex to get the incoming edges: ";
+                cin >> input;
+            }
+            incomingVertices = graph.getIncomingEdges(u);
+            if (graph.getIncomingEdgesCount(u) == 0)
+            {
+                cout << "Vertex " << u << " has no incoming edges.\n";
+                break;
+            }
+            cout << "Vertex " << u << " has " << graph.getIncomingEdgesCount(u) << " incoming edges from these vertices: ";
+            for (size_t vertice : incomingVertices) {
+                cout << vertice << " ";
+            }
+            cout << endl;
             break;
         case 11:
+            cout << (graph.detectCycle() ? "The graph contains a cycle.\n" : "No cycle detected in the graph.\n");
+            break;
+        case 12:
+            cout << (graph.detectСontour() ? "The graph contains a contour.\n" : "No contour detected in the graph.\n");
+            break;
+        case 13:
             if (!graph.detectLoop()) {
                 cout << "No loop detected in the graph.\n";
                 break;
             }
             cout << "The graph contains a loop(s).\n";
             break;
-        case 12:
+        case 14:
             if (!graph.detectLoop()) {
                 cout << "No loop detected in the graph.\n";
                 break;
@@ -294,14 +344,14 @@ int main() {
             }
             loops.clear();
             break;
-        case 13:
+        case 15:
             if (graph.isEmpty()) {
                 cout << "Graph is empty.\n";
                 break;
             }
             graph.PrintGraph();
             break;
-        case 14:
+        case 16:
             if (graph.isEmpty()) {
                 cout << "Graph adjacency matrix is empty.\n";
                 break;
