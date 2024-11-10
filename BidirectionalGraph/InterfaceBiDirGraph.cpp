@@ -49,12 +49,13 @@ void instructions() {
         << " 6 to search for an edge\n"
         << " 7 to get the number of vertices\n"
         << " 8 to get the number of edges\n"
-        << " 9 to check for cycles\n"
-        << "10 to print the graph\n"
-        << "11 to end\n";
+        << " 9 to get the connected vertices\n"
+        << "10 to check for cycles\n"
+        << "11 to print the graph\n"
+        << "12 to end\n";
 }
 
-const size_t CHOICE = 11;
+const size_t CHOICE = 13;
 
 int main() {
     size_t numVertices;
@@ -72,6 +73,7 @@ int main() {
     int choice;
     size_t u, v;
     double weight;
+    vector<size_t> connectedVertices;
 
     instructions();
     cout << "What do you want to do? ";
@@ -258,6 +260,29 @@ int main() {
             cout << "Number of edges in the graph: " << graph.getEdgesCount() << ".\n";
             break;
         case 9:
+            if (!graph.isConnected()) {
+                cout << "Graph is not connected.\n";
+                break;
+            }
+            cout << "Enter the vertex to get the connected vertices: ";
+            cin >> input;
+            while (!isWholeNumber(input) || (u = std::stoul(input)) >= graph.getVerticesCount()) {
+                cout << "Invalid vertex. Please enter a valid vertex to get the connected vertices: ";
+                cin >> input;
+            }
+            connectedVertices = graph.getConnectedVertices(u);
+            if (graph.getConnectedVerticesCount(u) == 0)
+            {
+                cout << "Vertex " << u << " has no connection.\n";
+                break;
+            }
+            cout << "Vertex " << u << " has " << graph.getConnectedVerticesCount(u) << " connection to these vertices: ";
+            for (size_t vertice : connectedVertices) {
+                cout << vertice << " ";
+            }
+            cout << endl;
+            break;
+        case 10:
             if (graph.detectCycle()) {
                 cout << "The graph contains a cycle.\n";
             }
@@ -265,7 +290,7 @@ int main() {
                 cout << "No cycle detected in the graph.\n";
             }
             break;
-        case 10:
+        case 11:
             if (graph.isEmpty()) {
                 cout << "Graph is empty.\n";
                 break;
