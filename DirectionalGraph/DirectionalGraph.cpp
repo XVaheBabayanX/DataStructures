@@ -4,6 +4,39 @@ DirectionalGraph::DirectionalGraph(size_t vertices) : _vertices(vertices), _edge
 
 DirectionalGraph::~DirectionalGraph() {}
 
+void DirectionalGraph::addVertex()
+{
+    adjList.push_back(DoublyLinkedList());
+    _vertices++;
+}
+
+void DirectionalGraph::removeVertex(size_t v)
+{
+    if (v >= _vertices)
+        return;
+
+    adjList[v].clear();
+
+    for (size_t i = 0; i < _vertices; ++i) {
+        if (i != v) {
+            adjList[i].removeElement(v);
+        }
+    }
+
+    adjList.erase(adjList.begin() + v);
+    _vertices--;
+
+    for (size_t i = 0; i < _vertices; ++i) {
+        ListNode* current = adjList[i].getFirstPtr();
+        while (current != nullptr) {
+            if (current->_vertex > v) {
+                current->_vertex--;
+            }
+            current = current->_nextPtr;
+        }
+    }
+}
+
 void DirectionalGraph::addEdge(size_t u, size_t v, double weight)
 {
     if (u < _vertices && v < _vertices)
@@ -65,6 +98,60 @@ bool DirectionalGraph::hasEdge(size_t u, size_t v) const
     }
 
     return false;
+}
+
+std::vector<size_t> DirectionalGraph::getOutgoingEdges(size_t v) const {
+    std::vector<size_t> outgoingVertices;
+
+    if (v < _vertices) {
+        ListNode* current = adjList[v].getFirstPtr();
+        while (current != nullptr) {
+            outgoingVertices.push_back(current->_vertex);
+            current = current->_nextPtr;
+        }
+    }
+
+    return outgoingVertices;
+}
+
+size_t DirectionalGraph::getOutgoingEdgesCount(size_t v) const {
+    size_t count = 0;
+    if (v < _vertices) {
+        ListNode* current = adjList[v].getFirstPtr();
+        while (current != nullptr) {
+            ++count;
+            current = current->_nextPtr;
+        }
+    }
+    return count;
+}
+
+std::vector<size_t> DirectionalGraph::getIncomingEdges(size_t v) const {
+    std::vector<size_t> incomingVertices;
+
+    if (v < _vertices) {
+        for (size_t i = 0; i < _vertices; ++i) {
+            if (hasEdge(i, v)) {
+                incomingVertices.push_back(i);
+            }
+        }
+    }
+
+    return incomingVertices;
+}
+
+size_t DirectionalGraph::getIncomingEdgesCount(size_t v) const {
+    size_t count = 0;
+
+    if (v < _vertices) {
+        for (size_t i = 0; i < _vertices; ++i) {
+            if (hasEdge(i, v)) {
+                ++count;
+            }
+        }
+    }
+
+    return count;
 }
 
 double DirectionalGraph::getWeight(size_t u, size_t v) const
@@ -136,37 +223,4 @@ bool DirectionalGraph::detectCycle() {
         }
     }
     return false;
-}
-
-void DirectionalGraph::addVertex()
-{
-    adjList.push_back(DoublyLinkedList());
-    _vertices++;
-}
-
-void DirectionalGraph::removeVertex(size_t v)
-{
-    if (v >= _vertices)
-        return;
-
-    adjList[v].clear();
-
-    for (size_t i = 0; i < _vertices; ++i) {
-        if (i != v) {
-            adjList[i].removeElement(v);
-        }
-    }
-
-    adjList.erase(adjList.begin() + v);
-    _vertices--;
-
-    for (size_t i = 0; i < _vertices; ++i) {
-        ListNode* current = adjList[i].getFirstPtr();
-        while (current != nullptr) {
-            if (current->_vertex > v) {
-                current->_vertex--; 
-            }
-            current = current->_nextPtr;
-        }
-    }
 }
