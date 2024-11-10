@@ -26,6 +26,10 @@ public:
 	bool removeEdge(size_t, size_t);
 	bool changeEdge(size_t, size_t, double);
 	bool hasEdge(size_t, size_t) const;
+	std::vector<size_t> getOutgoingEdges(size_t v) const;
+	size_t getOutgoingEdgesCount(size_t v) const;
+	std::vector<size_t> getIncomingEdges(size_t v) const;
+	size_t getIncomingEdgesCount(size_t v) const;
 	double getWeight(size_t, size_t) const;
 	size_t getEdgesCount() const { return _edges; }
 
