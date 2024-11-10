@@ -1,4 +1,4 @@
-﻿#include "Graph.h"
+#include "Graph.h"
 
 Graph::Graph() : Graph(DEFAUALT_VERTICES) {}
 
@@ -200,6 +200,62 @@ bool Graph::hasEdge(size_t u, size_t v) const
 	return true;
 }
 
+std::vector<size_t> Graph::getOutgoingEdges(size_t v) const {
+	std::vector<size_t> outgoingVertices;
+
+	if (hasVertex(v)) {
+		for (size_t j = 0; j < _vertices; ++j) {
+			if (_adjacency[v][j] != DEFAUALT_VALUE) {  
+				outgoingVertices.push_back(j);
+			}
+		}
+	}
+
+	return outgoingVertices;
+}
+
+size_t Graph::getOutgoingEdgesCount(size_t v) const {
+	size_t count = 0;
+
+	if (hasVertex(v)) {
+		for (size_t j = 0; j < _vertices; ++j) {
+			if (_adjacency[v][j] != DEFAUALT_VALUE) {  
+				++count;
+			}
+		}
+	}
+
+	return count;
+}
+
+std::vector<size_t> Graph::getIncomingEdges(size_t v) const {
+	std::vector<size_t> incomingVertices;
+
+	if (hasVertex(v)) {
+		for (size_t i = 0; i < _vertices; ++i) {
+			if (_adjacency[i][v] != DEFAUALT_VALUE) {  
+				incomingVertices.push_back(i);
+			}
+		}
+	}
+
+	return incomingVertices;
+}
+
+size_t Graph::getIncomingEdgesCount(size_t v) const {
+	size_t count = 0;
+
+	if (hasVertex(v)) {
+		for (size_t i = 0; i < _vertices; ++i) {
+			if (_adjacency[i][v] != DEFAUALT_VALUE) {  
+				++count;
+			}
+		}
+	}
+
+	return count;
+}
+
 double Graph::getWeight(size_t u, size_t v) const
 {
 	if (!hasEdge(u, v))
@@ -332,4 +388,3 @@ bool Graph::isZeroMatrix(const vector<vector<double>>& Matrix) const
 	});
 
 }
-
