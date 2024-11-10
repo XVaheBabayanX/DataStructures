@@ -5,6 +5,39 @@ BidirectionalGraph::BidirectionalGraph(size_t vertices) : _vertices(vertices), _
 
 BidirectionalGraph::~BidirectionalGraph() {}
 
+void BidirectionalGraph::addVertex()
+{
+    adjList.push_back(DoublyLinkedList());
+    _vertices++;
+}
+
+void BidirectionalGraph::removeVertex(size_t v)
+{
+    if (v >= _vertices)
+        return;
+
+    adjList[v].clear();
+
+    for (size_t i = 0; i < _vertices; ++i) {
+        if (i != v) {
+            adjList[i].removeElement(v); 
+        }
+    }
+
+    adjList.erase(adjList.begin() + v);
+    _vertices--;
+
+    for (size_t i = 0; i < _vertices; ++i) {
+        ListNode* current = adjList[i].getFirstPtr();
+        while (current != nullptr) {
+            if (current->_vertex > v) {
+                current->_vertex--;  
+            }
+            current = current->_nextPtr;
+        }
+    }
+}
+
 void BidirectionalGraph::addEdge(size_t u, size_t v, double weight)
 {
     if (u < _vertices && v < _vertices)
@@ -81,6 +114,34 @@ bool BidirectionalGraph::hasEdge(size_t u, size_t v) const
     return false;
 }
 
+std::vector<size_t> BidirectionalGraph::getConnectedVertices(size_t v) const {
+    std::vector<size_t> connectedVertices;
+
+    if (v < _vertices) {
+        ListNode* current = adjList[v].getFirstPtr();
+        while (current != nullptr) {
+            connectedVertices.push_back(current->_vertex);
+            current = current->_nextPtr;
+        }
+    }
+
+    return connectedVertices;
+}
+
+size_t BidirectionalGraph::getConnectedVerticesCount(size_t v) const {
+    size_t count = 0;
+
+    if (v < _vertices) {
+        ListNode* current = adjList[v].getFirstPtr();
+        while (current != nullptr) {
+            ++count;
+            current = current->_nextPtr;
+        }
+    }
+
+    return count;
+}
+
 double BidirectionalGraph::getWeight(size_t u, size_t v) const
 {
     if (u >= _vertices)
@@ -151,37 +212,4 @@ bool BidirectionalGraph::detectCycle() {
         }
     }
     return false;
-}
-
-void BidirectionalGraph::addVertex()
-{
-    adjList.push_back(DoublyLinkedList());
-    _vertices++;
-}
-
-void BidirectionalGraph::removeVertex(size_t v)
-{
-    if (v >= _vertices)
-        return;
-
-    adjList[v].clear();
-
-    for (size_t i = 0; i < _vertices; ++i) {
-        if (i != v) {
-            adjList[i].removeElement(v);
-        }
-    }
-
-    adjList.erase(adjList.begin() + v);
-    _vertices--;
-
-    for (size_t i = 0; i < _vertices; ++i) {
-        ListNode* current = adjList[i].getFirstPtr();
-        while (current != nullptr) {
-            if (current->_vertex > v) {
-                current->_vertex--; 
-            }
-            current = current->_nextPtr;
-        }
-    }
 }
