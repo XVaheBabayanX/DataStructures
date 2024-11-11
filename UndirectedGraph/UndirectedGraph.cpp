@@ -1,4 +1,4 @@
-#include "BidirectionalGraph.h"
+#include "UndirectedGraph.h"
 #include <iostream>
 
 BidirectionalGraph::BidirectionalGraph(size_t vertices) : _vertices(vertices), _edges(0), adjList(vertices) {}
