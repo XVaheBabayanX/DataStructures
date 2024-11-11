@@ -3,11 +3,11 @@
 #include <vector>
 #include <iostream>
 
-class DirectionalGraph
+class DirectedGraph
 {
 public:
-    DirectionalGraph(size_t vertices);
-    ~DirectionalGraph();
+    DirectedGraph(size_t vertices);
+    ~DirectedGraph();
 
     void addVertex();
     void removeVertex(size_t v);
