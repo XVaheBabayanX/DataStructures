@@ -1,17 +1,17 @@
 #include "UndirectedGraph.h"
 #include <iostream>
 
-BidirectionalGraph::BidirectionalGraph(size_t vertices) : _vertices(vertices), _edges(0), adjList(vertices) {}
+UndirectedGraph::UndirectedGraph(size_t vertices) : _vertices(vertices), _edges(0), adjList(vertices) {}
 
-BidirectionalGraph::~BidirectionalGraph() {}
+UndirectedGraph::~UndirectedGraph() {}
 
-void BidirectionalGraph::addVertex()
+void UndirectedGraph::addVertex()
 {
     adjList.push_back(DoublyLinkedList());
     _vertices++;
 }
 
-void BidirectionalGraph::removeVertex(size_t v)
+void UndirectedGraph::removeVertex(size_t v)
 {
     if (v >= _vertices)
         return;
@@ -38,7 +38,7 @@ void BidirectionalGraph::removeVertex(size_t v)
     }
 }
 
-void BidirectionalGraph::addEdge(size_t u, size_t v, double weight)
+void UndirectedGraph::addEdge(size_t u, size_t v, double weight)
 {
     if (u < _vertices && v < _vertices)
     {
@@ -53,7 +53,7 @@ void BidirectionalGraph::addEdge(size_t u, size_t v, double weight)
     }
 }
 
-bool BidirectionalGraph::removeEdge(size_t u, size_t v)
+bool UndirectedGraph::removeEdge(size_t u, size_t v)
 {
     if (u >= _vertices || v >= _vertices)
         return false;
@@ -68,7 +68,7 @@ bool BidirectionalGraph::removeEdge(size_t u, size_t v)
     return false;
 }
 
-bool BidirectionalGraph::changeEdge(size_t u, size_t v, double newWeight)
+bool UndirectedGraph::changeEdge(size_t u, size_t v, double newWeight)
 {
     if (u >= _vertices || v >= _vertices)
         return false;  
@@ -98,7 +98,7 @@ bool BidirectionalGraph::changeEdge(size_t u, size_t v, double newWeight)
     return false;  
 }
 
-bool BidirectionalGraph::hasEdge(size_t u, size_t v) const
+bool UndirectedGraph::hasEdge(size_t u, size_t v) const
 {
     if (u >= _vertices)
         return false;
@@ -114,7 +114,7 @@ bool BidirectionalGraph::hasEdge(size_t u, size_t v) const
     return false;
 }
 
-std::vector<size_t> BidirectionalGraph::getConnectedVertices(size_t v) const {
+std::vector<size_t> UndirectedGraph::getConnectedVertices(size_t v) const {
     std::vector<size_t> connectedVertices;
 
     if (v < _vertices) {
@@ -128,7 +128,7 @@ std::vector<size_t> BidirectionalGraph::getConnectedVertices(size_t v) const {
     return connectedVertices;
 }
 
-size_t BidirectionalGraph::getConnectedVerticesCount(size_t v) const {
+size_t UndirectedGraph::getConnectedVerticesCount(size_t v) const {
     size_t count = 0;
 
     if (v < _vertices) {
@@ -142,7 +142,7 @@ size_t BidirectionalGraph::getConnectedVerticesCount(size_t v) const {
     return count;
 }
 
-double BidirectionalGraph::getWeight(size_t u, size_t v) const
+double UndirectedGraph::getWeight(size_t u, size_t v) const
 {
     if (u >= _vertices)
         throw out_of_range("Vertex 'u' is out of range");
@@ -160,7 +160,7 @@ double BidirectionalGraph::getWeight(size_t u, size_t v) const
 }
 
 
-void BidirectionalGraph::printGraph() {
+void UndirectedGraph::printGraph() {
     std::cout << "\nGraph representation:\n";
 
     for (size_t i = 0; i < adjList.size(); ++i) {
@@ -182,7 +182,7 @@ void BidirectionalGraph::printGraph() {
     std::cout << "\n";
 }
 
-bool BidirectionalGraph::detectCycleUtil(size_t v, std::vector<bool>& visited, double parent) {
+bool UndirectedGraph::detectCycleUtil(size_t v, std::vector<bool>& visited, double parent) {
     visited[v] = true;
 
     ListNode* current = adjList[v].getFirstPtr();
@@ -201,7 +201,7 @@ bool BidirectionalGraph::detectCycleUtil(size_t v, std::vector<bool>& visited, d
     return false;
 }
 
-bool BidirectionalGraph::detectCycle() {
+bool UndirectedGraph::detectCycle() {
     std::vector<bool> visited(_vertices, false);
 
     for (size_t i = 0; i < _vertices; ++i) {
