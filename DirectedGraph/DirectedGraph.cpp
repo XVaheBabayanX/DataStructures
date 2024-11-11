@@ -1,16 +1,16 @@
 #include "DirectedGraph.h"
 
-DirectionalGraph::DirectionalGraph(size_t vertices) : _vertices(vertices), _edges(0), adjList(vertices) {}
+DirectedGraph::DirectedGraph(size_t vertices) : _vertices(vertices), _edges(0), adjList(vertices) {}
 
-DirectionalGraph::~DirectionalGraph() {}
+DirectedGraph::~DirectedGraph() {}
 
-void DirectionalGraph::addVertex()
+void DirectedGraph::addVertex()
 {
     adjList.push_back(DoublyLinkedList());
     _vertices++;
 }
 
-void DirectionalGraph::removeVertex(size_t v)
+void DirectedGraph::removeVertex(size_t v)
 {
     if (v >= _vertices)
         return;
@@ -37,7 +37,7 @@ void DirectionalGraph::removeVertex(size_t v)
     }
 }
 
-void DirectionalGraph::addEdge(size_t u, size_t v, double weight)
+void DirectedGraph::addEdge(size_t u, size_t v, double weight)
 {
     if (u < _vertices && v < _vertices)
     {
@@ -51,7 +51,7 @@ void DirectionalGraph::addEdge(size_t u, size_t v, double weight)
     }
 }
 
-bool DirectionalGraph::removeEdge(size_t u, size_t v)
+bool DirectedGraph::removeEdge(size_t u, size_t v)
 {
     if (u >= _vertices || v >= _vertices)
         return false;
@@ -65,7 +65,7 @@ bool DirectionalGraph::removeEdge(size_t u, size_t v)
     return false;
 }
 
-bool DirectionalGraph::changeEdge(size_t u, size_t v, double newWeight)
+bool DirectedGraph::changeEdge(size_t u, size_t v, double newWeight)
 {
     if (u >= _vertices || v >= _vertices)
         return false;  
@@ -84,7 +84,7 @@ bool DirectionalGraph::changeEdge(size_t u, size_t v, double newWeight)
     return false;  
 }
 
-bool DirectionalGraph::hasEdge(size_t u, size_t v) const
+bool DirectedGraph::hasEdge(size_t u, size_t v) const
 {
     if (u >= _vertices)
         return false;
@@ -100,7 +100,7 @@ bool DirectionalGraph::hasEdge(size_t u, size_t v) const
     return false;
 }
 
-std::vector<size_t> DirectionalGraph::getOutgoingEdges(size_t v) const {
+std::vector<size_t> DirectedGraph::getOutgoingEdges(size_t v) const {
     std::vector<size_t> outgoingVertices;
 
     if (v < _vertices) {
@@ -114,7 +114,7 @@ std::vector<size_t> DirectionalGraph::getOutgoingEdges(size_t v) const {
     return outgoingVertices;
 }
 
-size_t DirectionalGraph::getOutgoingEdgesCount(size_t v) const {
+size_t DirectedGraph::getOutgoingEdgesCount(size_t v) const {
     size_t count = 0;
     if (v < _vertices) {
         ListNode* current = adjList[v].getFirstPtr();
@@ -126,7 +126,7 @@ size_t DirectionalGraph::getOutgoingEdgesCount(size_t v) const {
     return count;
 }
 
-std::vector<size_t> DirectionalGraph::getIncomingEdges(size_t v) const {
+std::vector<size_t> DirectedGraph::getIncomingEdges(size_t v) const {
     std::vector<size_t> incomingVertices;
 
     if (v < _vertices) {
@@ -140,7 +140,7 @@ std::vector<size_t> DirectionalGraph::getIncomingEdges(size_t v) const {
     return incomingVertices;
 }
 
-size_t DirectionalGraph::getIncomingEdgesCount(size_t v) const {
+size_t DirectedGraph::getIncomingEdgesCount(size_t v) const {
     size_t count = 0;
 
     if (v < _vertices) {
@@ -154,7 +154,7 @@ size_t DirectionalGraph::getIncomingEdgesCount(size_t v) const {
     return count;
 }
 
-double DirectionalGraph::getWeight(size_t u, size_t v) const
+double DirectedGraph::getWeight(size_t u, size_t v) const
 {
     if (u >= _vertices)
         throw out_of_range("Vertex 'u' is out of range");
@@ -171,7 +171,7 @@ double DirectionalGraph::getWeight(size_t u, size_t v) const
     throw runtime_error("Edge does not exist");
 }
 
-void DirectionalGraph::printGraph() {
+void DirectedGraph::printGraph() {
     std::cout << "\nGraph representation:\n";
 
     for (size_t i = 0; i < adjList.size(); ++i) {
@@ -193,7 +193,7 @@ void DirectionalGraph::printGraph() {
     std::cout << "\n";
 }
 
-bool DirectionalGraph::detectCycleUtil(size_t v, std::vector<bool>& visited, std::vector<bool>& recursionStack) {
+bool DirectedGraph::detectCycleUtil(size_t v, std::vector<bool>& visited, std::vector<bool>& recursionStack) {
     if (!visited[v]) {
         visited[v] = true;
         recursionStack[v] = true;
@@ -213,7 +213,7 @@ bool DirectionalGraph::detectCycleUtil(size_t v, std::vector<bool>& visited, std
     return false;
 }
 
-bool DirectionalGraph::detectCycle() {
+bool DirectedGraph::detectCycle() {
     std::vector<bool> visited(_vertices, false);
     std::vector<bool> recursionStack(_vertices, false);
 
