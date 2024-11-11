@@ -1,4 +1,4 @@
-#include "BidirectionalGraph.h"
+#include "UndirectedGraph.h"
 #include <iostream>
 #include <string>
 
