@@ -68,7 +68,7 @@ int main() {
         cin >> input;
     }
 
-    BidirectionalGraph graph(numVertices);
+    UndirectedGraph graph(numVertices);
 
     int choice;
     size_t u, v;
