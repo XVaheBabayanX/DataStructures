@@ -3,11 +3,11 @@
 #include <vector>
 #include <iostream>
 
-class BidirectionalGraph
+class UndirectedGraph
 {
 public:
-    BidirectionalGraph(size_t vertices);
-    ~BidirectionalGraph();
+    UndirectedGraph(size_t vertices);
+    ~UndirectedGraph();
 
     void addVertex();
     void removeVertex(size_t v);
