@@ -69,7 +69,7 @@ int main() {
         cin >> input;
     }
 
-    DirectionalGraph graph(numVertices);
+    DirectedGraph graph(numVertices);
 
     int choice;
     size_t u, v;
