@@ -1,4 +1,4 @@
-#include "DirectionalGraph.h"
+#include "DirectedGraph.h"
 
 DirectionalGraph::DirectionalGraph(size_t vertices) : _vertices(vertices), _edges(0), adjList(vertices) {}
 
