@@ -196,6 +196,14 @@ Node* BinaryTree::Predecessor(Node* node) const {
 	return Parent;
 }
 
+Node* BinaryTree::Sibling(Node* node) const {
+	if (node == nullptr) return nullptr;
+	if (node == node->_parent->_leftChild)
+		return node->_parent->_rightChild;
+	else
+		return node->_parent->_leftChild;
+}
+
 void BinaryTree::InorderTraversal(Node* node, std::vector<Node*>& result) {
 	if (node != nullptr) {
 		InorderTraversal(node->_leftChild, result);
@@ -429,8 +437,23 @@ int BinaryTree::getDepth() const {
 	return getDepth(_Root);
 }
 
+bool BinaryTree::isFull() const {
+	return isFull(_Root);
+}
+
+bool BinaryTree::isFull(Node* node) {
+	if (node == nullptr)
+		return true;
+	if (isLeaf(node))
+		return true;
+	if((node->_leftChild != nullptr) && (node->_rightChild != nullptr))
+		return isFull(node->_leftChild) && isFull(node->_rightChild);
+		
+	return false;
+}
+
 bool BinaryTree::isPerfect() const {
-	return isPerfect(_Root, static_cast<int>(getDepth(_Root)), 0);
+	return isPerfect(_Root, getDepth(_Root), 0);
 }
 
 bool BinaryTree::isPerfect(Node* node, int depth, int level) {
@@ -459,6 +482,20 @@ int BinaryTree::isBalanced(Node* node) {
 	if (abs(leftHeight - rightHeight) > 1)
 		return -1;
 	return std::max(leftHeight, rightHeight) + 1;
+}
+
+bool BinaryTree::isDegenerate() const {
+	return isDegenerate(_Root);
+}
+
+bool BinaryTree::isDegenerate(Node* node) {
+	if (node == nullptr)
+		return true;
+
+	if ((node->_leftChild != nullptr) && (node->_rightChild != nullptr))
+		return false;
+
+	return isDegenerate(node->_leftChild) || isDegenerate(node->_rightChild);;
 }
 
 bool BinaryTree::isComplete() const {
