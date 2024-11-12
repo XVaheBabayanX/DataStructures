@@ -38,6 +38,7 @@ public:
 	Node* Maximum(Node*) const;
 	Node* Successor(Node*) const;
 	Node* Predecessor(Node*) const;
+	Node* Sibling(Node*) const;
 
 	std::vector<Node*> InorderTraversal() const;
 	static std::vector<Node*> InorderTraversal(Node*);
@@ -82,6 +83,9 @@ public:
 	int getDepth() const;
 	static int getDepth(Node*);
 
+	bool isFull() const;
+	static bool isFull(Node*);
+
 	bool isPerfect() const;
 	static bool isPerfect(Node*, int, int); 
 
@@ -90,6 +94,9 @@ public:
 
 	bool isComplete() const;
 	static bool isComplete(Node*);
+
+	bool isDegenerate() const;
+	static bool isDegenerate(Node*);
 
 	bool isEmpty() { return _Root == nullptr; }
 	static bool isEmpty(Node* node) { return node == nullptr; }
