@@ -42,22 +42,25 @@ void instructions() {
         << " 7 to display elements in Preorder Traversal\n"
         << " 8 to display elements in Postorder Traversal\n"
         << " 9 to display elements in Level Order Traversal\n"
-        << "10 to perform Range Search\n"  
-        << "11 to get the depth of the tree\n"
-        << "12 to balance the tree\n"
-        << "13 to check if the tree is empty\n"
-        << "14 to check if the tree is full\n"
-        << "15 to check if the tree is complete\n"
-        << "16 to check if the tree is perfect\n"
-        << "17 to check if the tree is balanced\n"
-        << "18 to check if the tree is degenerate\n"
-        << "19 to visualize the tree\n"
-        << "20 to display the minimum key\n"
-        << "21 to display the maximum key\n"
-        << "22 to exit the program\n";  
+        << "10 to display elements in Reverse Level Order Traversal\n"
+        << "11 to display elements in Boundary Traversal\n"
+        << "12 to display elements in Diagonal Traversal\n"
+        << "13 to perform Range Search\n"  
+        << "14 to get the depth of the tree\n"
+        << "15 to balance the tree\n"
+        << "16 to check if the tree is empty\n"
+        << "17 to check if the tree is full\n"
+        << "18 to check if the tree is complete\n"
+        << "19 to check if the tree is perfect\n"
+        << "20 to check if the tree is balanced\n"
+        << "21 to check if the tree is degenerate\n"
+        << "22 to visualize the tree\n"
+        << "23 to display the minimum key\n"
+        << "24 to display the maximum key\n"
+        << "25 to exit the program\n";  
 }
 
-const size_t CHOICE = 22;
+const size_t CHOICE = 25;
 
 int main() {
     BinaryTree tree;
@@ -187,7 +190,34 @@ int main() {
             }
             break;
         }
-        case 10: {  
+        case 10: {
+            if (tree.isEmpty()) {
+                cout << "The tree is empty, cannot display elements.\n";
+            }
+            else {
+                cout << "Elements in Reverse Level Order Traversal: " << tree.toStringReverseLevelOrder() << "\n";
+            }
+            break;
+        }
+        case 11: {
+            if (tree.isEmpty()) {
+                cout << "The tree is empty, cannot display elements.\n";
+            }
+            else {
+                cout << "Elements in Boundary Traversal: " << tree.toStringBoundary() << "\n";
+            }
+            break;
+        }
+        case 12: {
+            if (tree.isEmpty()) {
+                cout << "The tree is empty, cannot display elements.\n";
+            }
+            else {
+                cout << "Elements in Diagonal Traversal: " << tree.toStringDiagonal() << "\n";
+            }
+            break;
+        }
+        case 13: {  
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot perform range search.\n";
                 break;
@@ -226,7 +256,7 @@ int main() {
             }
             break;
         }
-        case 11: {
+        case 14: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot get depth.\n";
             }
@@ -235,7 +265,7 @@ int main() {
             }
             break;
         }
-        case 12: {
+        case 15: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot balance it.\n";
             }
@@ -245,7 +275,7 @@ int main() {
             }
             break;
         }
-        case 13: {
+        case 16: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty.\n";
             }
@@ -254,7 +284,7 @@ int main() {
             }
             break;
         }
-        case 14: {
+        case 17: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot check it for fullness.\n";
             }
@@ -266,7 +296,7 @@ int main() {
             }
             break;
         }
-        case 15: {
+        case 18: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot check it for completeness.\n";
             }
@@ -278,7 +308,7 @@ int main() {
             }
             break;
         }
-        case 16: {
+        case 19: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot check it for perfection.\n";
             }
@@ -290,7 +320,7 @@ int main() {
             }
             break;
         }
-        case 17: {
+        case 20: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot check it for balance.\n";
             }
@@ -302,7 +332,7 @@ int main() {
             }
             break;
         }
-        case 18: {
+        case 21: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot check it for degeneracy.\n";
             }
@@ -314,7 +344,7 @@ int main() {
             }
             break;
         }
-        case 19: {
+        case 22: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot visualize.\n";
             }
@@ -324,7 +354,7 @@ int main() {
             }
             break;
         }
-        case 20: {
+        case 23: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot display minimum key.\n";
             }
@@ -333,7 +363,7 @@ int main() {
             }
             break;
         }
-        case 21: {
+        case 24: {
             if (tree.isEmpty()) {
                 cout << "The tree is empty, cannot display maximum key.\n";
             }
