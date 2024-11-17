@@ -296,6 +296,126 @@ std::vector<Node*> BinaryTree::LevelOrderTraversal(Node* node) {
 	return result;
 }
 
+void BinaryTree::ReverseLevelOrderTraversal(Node* node, std::vector<Node*>& result) {
+	if (node == nullptr) return;
+
+	std::queue<Node*> queue;
+	std::stack<Node*> stack;
+	queue.push(node);
+
+	while (!queue.empty()) {
+		Node* currentNode = queue.front();
+		queue.pop();
+		stack.push(currentNode);
+
+		if (currentNode->_rightChild != nullptr) {
+			queue.push(currentNode->_rightChild);
+		}
+		if (currentNode->_leftChild != nullptr) {
+			queue.push(currentNode->_leftChild);
+		}
+	}
+
+	while (!stack.empty()) {
+		result.push_back(stack.top());
+		stack.pop();
+	}
+}
+
+std::vector<Node*> BinaryTree::ReverseLevelOrderTraversal() const {
+	std::vector<Node*> result;
+	ReverseLevelOrderTraversal(_Root, result);
+	return result;
+}
+
+std::vector<Node*> BinaryTree::ReverseLevelOrderTraversal(Node* node) {
+	std::vector<Node*> result;
+	ReverseLevelOrderTraversal(node, result);
+	return result;
+}
+
+void BinaryTree::BoundaryTraversal(Node* node, std::vector<Node*>& result) {
+	if (node == nullptr) return;
+
+	if (!isLeaf(node)) result.push_back(node);
+
+	addLeftBoundary(node, result);
+	addLeaves(node, result);
+	addRightBoundary(node, result);
+}
+
+void BinaryTree::addLeftBoundary(Node* node, std::vector<Node*>& result) {
+	Node* current = node->_leftChild;
+	while (current) {
+		if (!isLeaf(current)) result.push_back(current);
+		current = current->_leftChild ? current->_leftChild : current->_rightChild;
+	}
+}
+
+void BinaryTree::addLeaves(Node* node, std::vector<Node*>& result) {
+	if (node == nullptr) return;
+	if (isLeaf(node)) result.push_back(node);
+	addLeaves(node->_leftChild, result);
+	addLeaves(node->_rightChild, result);
+}
+
+void BinaryTree::addRightBoundary(Node* node, std::vector<Node*>& result) {
+	std::stack<Node*> stack;
+	Node* current = node->_rightChild;
+	while (current) {
+		if (!isLeaf(current)) stack.push(current);
+		current = current->_rightChild ? current->_rightChild : current->_leftChild;
+	}
+	while (!stack.empty()) {
+		result.push_back(stack.top());
+		stack.pop();
+	}
+}
+
+std::vector<Node*> BinaryTree::BoundaryTraversal() const {
+	std::vector<Node*> result;
+	BoundaryTraversal(_Root, result);
+	return result;
+}
+
+std::vector<Node*> BinaryTree::BoundaryTraversal(Node* node) {
+	std::vector<Node*> result;
+	BoundaryTraversal(node, result);
+	return result;
+}
+
+void BinaryTree::DiagonalTraversal(Node* node, std::vector<Node*>& result) {
+	if (node == nullptr) return;
+
+	std::queue<Node*> queue;
+	queue.push(node);
+
+	while (!queue.empty()) {
+		Node* current = queue.front();
+		queue.pop();
+
+		while (current) {
+			result.push_back(current);
+			if (current->_leftChild) {
+				queue.push(current->_leftChild);
+			}
+			current = current->_rightChild;
+		}
+	}
+}
+
+std::vector<Node*> BinaryTree::DiagonalTraversal() const {
+	std::vector<Node*> result;
+	DiagonalTraversal(_Root, result);
+	return result;
+}
+
+std::vector<Node*> BinaryTree::DiagonalTraversal(Node* node) {
+	std::vector<Node*> result;
+	DiagonalTraversal(node, result);
+	return result;
+}
+
 void BinaryTree::RangeSearch(Node* node, int low, int high, std::vector<Node*>& result) {
 	if (node == nullptr) return;
 	BinaryTree tree(node);
@@ -371,6 +491,21 @@ std::string BinaryTree::toStringPostorder() const {
 
 std::string BinaryTree::toStringLevelOrder() const {
 	std::vector<Node*> nodes = LevelOrderTraversal();
+	return toString(nodes);
+}
+
+std::string BinaryTree::toStringReverseLevelOrder() const {
+	std::vector<Node*> nodes = ReverseLevelOrderTraversal();
+	return toString(nodes);
+}
+
+std::string BinaryTree::toStringBoundary() const {
+	std::vector<Node*> nodes = BoundaryTraversal();
+	return toString(nodes);
+}
+
+std::string BinaryTree::toStringDiagonal() const {
+	std::vector<Node*> nodes = DiagonalTraversal();
 	return toString(nodes);
 }
 
