@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <queue>
+#include <stack>
 #include <sstream>
 #include <iostream>
 #include <algorithm>
@@ -56,6 +57,18 @@ public:
 	static std::vector<Node*> LevelOrderTraversal(Node*);
 	static void LevelOrderTraversal(Node*, std::vector<Node*>&);
 
+	std::vector<Node*> ReverseLevelOrderTraversal() const;
+	static std::vector<Node*> ReverseLevelOrderTraversal(Node*);
+	static void ReverseLevelOrderTraversal(Node*, std::vector<Node*>&);
+
+	std::vector<Node*> BoundaryTraversal() const;
+	static std::vector<Node*> BoundaryTraversal(Node*);
+	static void BoundaryTraversal(Node*, std::vector<Node*>&);
+
+	std::vector<Node*> DiagonalTraversal() const;
+	static std::vector<Node*> DiagonalTraversal(Node*);
+	static void DiagonalTraversal(Node*, std::vector<Node*>&);
+
 	std::vector<Node*> RangeSearch(int, int) const;
 	static std::vector<Node*> RangeSearch(Node*, int, int);
 	static void RangeSearch(Node*, int, int, std::vector<Node*>&);
@@ -66,6 +79,9 @@ public:
 	std::string toStringPreorder() const;
 	std::string toStringPostorder() const;
 	std::string toStringLevelOrder() const;
+	std::string toStringReverseLevelOrder() const;
+	std::string toStringBoundary() const;
+	std::string toStringDiagonal() const;
 	std::string toStringRange(int, int) const;
 
 	void balance();
@@ -104,7 +120,9 @@ public:
 
 private:
 	Node* CreateNode(const int Key) const { return new Node(Key); }
-
+	static void addLeftBoundary(Node* node, std::vector<Node*>& result);
+	static void addLeaves(Node* node, std::vector<Node*>& result);
+	static void addRightBoundary(Node* node, std::vector<Node*>& result);
 private:
 	Node* _Root = nullptr;
 	size_t _nodes = 0;
