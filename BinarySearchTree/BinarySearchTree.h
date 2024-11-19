@@ -18,13 +18,13 @@ public:
 	Node* _rightChild = nullptr;
 };
 
-class BinaryTree
+class BinarySearchTree
 {
 public:
-	BinaryTree() : _Root(nullptr), _nodes(0) {}
-	BinaryTree(const BinaryTree&);
-	BinaryTree(const Node*);
-	~BinaryTree();
+	BinarySearchTree() : _Root(nullptr), _nodes(0) {}
+	BinarySearchTree(const BinarySearchTree&);
+	BinarySearchTree(const Node*);
+	~BinarySearchTree();
 private:
 	void copyTree(Node*, const Node*);
 public:
