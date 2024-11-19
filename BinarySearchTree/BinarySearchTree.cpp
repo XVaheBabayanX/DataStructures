@@ -1,6 +1,6 @@
-#include "BinaryTree.h"
+#include "BinarySearchTree.h"
 
-BinaryTree::BinaryTree(const BinaryTree& other) : _Root(nullptr), _nodes(0) {
+BinarySearchTree::BinarySearchTree(const BinarySearchTree& other) : _Root(nullptr), _nodes(0) {
 	if (other._Root != nullptr) {
 		_Root = new Node(other._Root->_key);
 		_nodes++;
@@ -8,21 +8,21 @@ BinaryTree::BinaryTree(const BinaryTree& other) : _Root(nullptr), _nodes(0) {
 	}
 }
 
-BinaryTree::BinaryTree(const Node* root) : _Root(nullptr), _nodes(0) {
+BinarySearchTree::BinarySearchTree(const Node* root) : _Root(nullptr), _nodes(0) {
 	if (root != nullptr) {
-		_Root = new Node(root->_key); 
+		_Root = new Node(root->_key);
 		_nodes++;
-		copyTree(_Root, root); 
+		copyTree(_Root, root);
 	}
 }
 
-BinaryTree::~BinaryTree() {
+BinarySearchTree::~BinarySearchTree() {
 	clearTree(_Root);
 	_Root = nullptr;
 	_nodes = 0;
 }
 
-void BinaryTree::copyTree(Node* thisNode,const Node* otherNode) {
+void BinarySearchTree::copyTree(Node* thisNode, const Node* otherNode) {
 	if (otherNode->_leftChild != nullptr) {
 		thisNode->_leftChild = new Node(otherNode->_leftChild->_key, thisNode);
 		_nodes++;
@@ -35,7 +35,7 @@ void BinaryTree::copyTree(Node* thisNode,const Node* otherNode) {
 	}
 }
 
-void BinaryTree::clearTree(Node* node) {
+void BinarySearchTree::clearTree(Node* node) {
 	if (node == nullptr) return;
 	clearTree(node->_leftChild);
 	clearTree(node->_rightChild);
@@ -43,7 +43,7 @@ void BinaryTree::clearTree(Node* node) {
 	node = nullptr;
 }
 
-Node* BinaryTree::getRoot(Node* node) {
+Node* BinarySearchTree::getRoot(Node* node) {
 	if (node->_parent == nullptr) return nullptr;
 	Node* Root = node->_parent;
 	while (Root->_parent != nullptr)
@@ -53,7 +53,7 @@ Node* BinaryTree::getRoot(Node* node) {
 	return Root;
 }
 
-bool BinaryTree::Insert(const int Key) {
+bool BinarySearchTree::Insert(const int Key) {
 	if (isEmpty(_Root)) {
 		_Root = CreateNode(Key);
 		_nodes++;
@@ -64,7 +64,7 @@ bool BinaryTree::Insert(const int Key) {
 	Node* Parent = nullptr;
 	while (Current != nullptr) {
 		Parent = Current;
-		if (Key < Current->_key) Current = Current->_leftChild;	
+		if (Key < Current->_key) Current = Current->_leftChild;
 		else if (Key > Current->_key) Current = Current->_rightChild;
 		else return false;
 	}
@@ -75,7 +75,7 @@ bool BinaryTree::Insert(const int Key) {
 	return true;
 }
 
-bool BinaryTree::Delete(const int Key) {
+bool BinarySearchTree::Delete(const int Key) {
 	Node* TargetNode = Search(Key);
 	if (TargetNode == nullptr) return false;
 
@@ -131,7 +131,7 @@ bool BinaryTree::Delete(const int Key) {
 }
 
 
-Node* BinaryTree::Search(const int Key) const {
+Node* BinarySearchTree::Search(const int Key) const {
 	if (isEmpty(_Root)) return nullptr;
 	Node* Current = _Root;
 	while (Current != nullptr) {
@@ -142,17 +142,17 @@ Node* BinaryTree::Search(const int Key) const {
 	return nullptr;
 }
 
-int BinaryTree::MinimumKey() const {
+int BinarySearchTree::MinimumKey() const {
 	if (isEmpty(_Root)) return 0;
 	return Minimum(_Root)->_key;
 }
 
-int BinaryTree::MaximumKey() const {
+int BinarySearchTree::MaximumKey() const {
 	if (isEmpty(_Root)) return 0;
 	return Maximum(_Root)->_key;
 }
 
-Node* BinaryTree::Minimum(Node* node) const {
+Node* BinarySearchTree::Minimum(Node* node) const {
 	if (isEmpty(node)) return nullptr;
 	Node* Minimum = node;
 	while (Minimum->_leftChild != nullptr)
@@ -162,7 +162,7 @@ Node* BinaryTree::Minimum(Node* node) const {
 	return Minimum;
 }
 
-Node* BinaryTree::Maximum(Node* node) const {
+Node* BinarySearchTree::Maximum(Node* node) const {
 	if (isEmpty(node)) return nullptr;
 	Node* Maximum = node;
 	while (Maximum->_rightChild != nullptr)
@@ -172,7 +172,7 @@ Node* BinaryTree::Maximum(Node* node) const {
 	return Maximum;
 }
 
-Node* BinaryTree::Successor(Node* node) const {
+Node* BinarySearchTree::Successor(Node* node) const {
 	if (node == nullptr) return nullptr;
 	if (node->_rightChild != nullptr)
 		return Minimum(node->_rightChild);
@@ -184,7 +184,7 @@ Node* BinaryTree::Successor(Node* node) const {
 	return Parent;
 }
 
-Node* BinaryTree::Predecessor(Node* node) const {
+Node* BinarySearchTree::Predecessor(Node* node) const {
 	if (node == nullptr) return nullptr;
 	if (node->_leftChild != nullptr)
 		return Maximum(node->_leftChild);
@@ -196,7 +196,7 @@ Node* BinaryTree::Predecessor(Node* node) const {
 	return Parent;
 }
 
-Node* BinaryTree::Sibling(Node* node) const {
+Node* BinarySearchTree::Sibling(Node* node) const {
 	if (node == nullptr) return nullptr;
 	if (node == node->_parent->_leftChild)
 		return node->_parent->_rightChild;
@@ -204,7 +204,7 @@ Node* BinaryTree::Sibling(Node* node) const {
 		return node->_parent->_leftChild;
 }
 
-void BinaryTree::InorderTraversal(Node* node, std::vector<Node*>& result) {
+void BinarySearchTree::InorderTraversal(Node* node, std::vector<Node*>& result) {
 	if (node != nullptr) {
 		InorderTraversal(node->_leftChild, result);
 		result.push_back(node);
@@ -212,68 +212,68 @@ void BinaryTree::InorderTraversal(Node* node, std::vector<Node*>& result) {
 	}
 }
 
-std::vector<Node*> BinaryTree::InorderTraversal() const {
+std::vector<Node*> BinarySearchTree::InorderTraversal() const {
 	std::vector<Node*> result;
 	InorderTraversal(_Root, result);
 	return result;
 }
 
-std::vector<Node*> BinaryTree::InorderTraversal(Node* node) {
+std::vector<Node*> BinarySearchTree::InorderTraversal(Node* node) {
 	std::vector<Node*> result;
 	InorderTraversal(node, result);
 	return result;
 }
 
-void BinaryTree::PreorderTraversal(Node* node, std::vector<Node*>& result) {
+void BinarySearchTree::PreorderTraversal(Node* node, std::vector<Node*>& result) {
 	if (node != nullptr) {
-		result.push_back(node);                          
-		PreorderTraversal(node->_leftChild, result);     
-		PreorderTraversal(node->_rightChild, result);    
+		result.push_back(node);
+		PreorderTraversal(node->_leftChild, result);
+		PreorderTraversal(node->_rightChild, result);
 	}
 }
 
-std::vector<Node*> BinaryTree::PreorderTraversal() const {
+std::vector<Node*> BinarySearchTree::PreorderTraversal() const {
 	std::vector<Node*> result;
 	PreorderTraversal(_Root, result);
 	return result;
 }
 
-std::vector<Node*> BinaryTree::PreorderTraversal(Node* node) {
+std::vector<Node*> BinarySearchTree::PreorderTraversal(Node* node) {
 	std::vector<Node*> result;
 	PreorderTraversal(node, result);
 	return result;
 }
 
-void BinaryTree::PostorderTraversal(Node* node, std::vector<Node*>& result) {
+void BinarySearchTree::PostorderTraversal(Node* node, std::vector<Node*>& result) {
 	if (node != nullptr) {
-		PostorderTraversal(node->_leftChild, result);    
-		PostorderTraversal(node->_rightChild, result);   
-		result.push_back(node);                          
+		PostorderTraversal(node->_leftChild, result);
+		PostorderTraversal(node->_rightChild, result);
+		result.push_back(node);
 	}
 }
 
-std::vector<Node*> BinaryTree::PostorderTraversal() const {
+std::vector<Node*> BinarySearchTree::PostorderTraversal() const {
 	std::vector<Node*> result;
 	PostorderTraversal(_Root, result);
 	return result;
 }
 
-std::vector<Node*> BinaryTree::PostorderTraversal(Node* node) {
+std::vector<Node*> BinarySearchTree::PostorderTraversal(Node* node) {
 	std::vector<Node*> result;
 	PostorderTraversal(node, result);
 	return result;
 }
 
-void BinaryTree::LevelOrderTraversal(Node* node, std::vector<Node*>& result) {
-	if (node == nullptr) return; 
+void BinarySearchTree::LevelOrderTraversal(Node* node, std::vector<Node*>& result) {
+	if (node == nullptr) return;
 
-	std::queue<Node*> queue; 
-	queue.push(node); 
+	std::queue<Node*> queue;
+	queue.push(node);
 
 	while (!queue.empty()) {
-		Node* currentNode = queue.front(); 
-		queue.pop(); 
-		result.push_back(currentNode); 
+		Node* currentNode = queue.front();
+		queue.pop();
+		result.push_back(currentNode);
 
 		if (currentNode->_leftChild != nullptr) {
 			queue.push(currentNode->_leftChild);
@@ -284,19 +284,19 @@ void BinaryTree::LevelOrderTraversal(Node* node, std::vector<Node*>& result) {
 	}
 }
 
-std::vector<Node*> BinaryTree::LevelOrderTraversal() const {
+std::vector<Node*> BinarySearchTree::LevelOrderTraversal() const {
 	std::vector<Node*> result;
-	LevelOrderTraversal(_Root, result); 
+	LevelOrderTraversal(_Root, result);
 	return result;
 }
 
-std::vector<Node*> BinaryTree::LevelOrderTraversal(Node* node) {
+std::vector<Node*> BinarySearchTree::LevelOrderTraversal(Node* node) {
 	std::vector<Node*> result;
 	LevelOrderTraversal(node, result);
 	return result;
 }
 
-void BinaryTree::ReverseLevelOrderTraversal(Node* node, std::vector<Node*>& result) {
+void BinarySearchTree::ReverseLevelOrderTraversal(Node* node, std::vector<Node*>& result) {
 	if (node == nullptr) return;
 
 	std::queue<Node*> queue;
@@ -322,19 +322,19 @@ void BinaryTree::ReverseLevelOrderTraversal(Node* node, std::vector<Node*>& resu
 	}
 }
 
-std::vector<Node*> BinaryTree::ReverseLevelOrderTraversal() const {
+std::vector<Node*> BinarySearchTree::ReverseLevelOrderTraversal() const {
 	std::vector<Node*> result;
 	ReverseLevelOrderTraversal(_Root, result);
 	return result;
 }
 
-std::vector<Node*> BinaryTree::ReverseLevelOrderTraversal(Node* node) {
+std::vector<Node*> BinarySearchTree::ReverseLevelOrderTraversal(Node* node) {
 	std::vector<Node*> result;
 	ReverseLevelOrderTraversal(node, result);
 	return result;
 }
 
-void BinaryTree::BoundaryTraversal(Node* node, std::vector<Node*>& result) {
+void BinarySearchTree::BoundaryTraversal(Node* node, std::vector<Node*>& result) {
 	if (node == nullptr) return;
 
 	if (!isLeaf(node)) result.push_back(node);
@@ -344,7 +344,7 @@ void BinaryTree::BoundaryTraversal(Node* node, std::vector<Node*>& result) {
 	addRightBoundary(node, result);
 }
 
-void BinaryTree::addLeftBoundary(Node* node, std::vector<Node*>& result) {
+void BinarySearchTree::addLeftBoundary(Node* node, std::vector<Node*>& result) {
 	Node* current = node->_leftChild;
 	while (current) {
 		if (!isLeaf(current)) result.push_back(current);
@@ -352,14 +352,14 @@ void BinaryTree::addLeftBoundary(Node* node, std::vector<Node*>& result) {
 	}
 }
 
-void BinaryTree::addLeaves(Node* node, std::vector<Node*>& result) {
+void BinarySearchTree::addLeaves(Node* node, std::vector<Node*>& result) {
 	if (node == nullptr) return;
 	if (isLeaf(node)) result.push_back(node);
 	addLeaves(node->_leftChild, result);
 	addLeaves(node->_rightChild, result);
 }
 
-void BinaryTree::addRightBoundary(Node* node, std::vector<Node*>& result) {
+void BinarySearchTree::addRightBoundary(Node* node, std::vector<Node*>& result) {
 	std::stack<Node*> stack;
 	Node* current = node->_rightChild;
 	while (current) {
@@ -372,19 +372,19 @@ void BinaryTree::addRightBoundary(Node* node, std::vector<Node*>& result) {
 	}
 }
 
-std::vector<Node*> BinaryTree::BoundaryTraversal() const {
+std::vector<Node*> BinarySearchTree::BoundaryTraversal() const {
 	std::vector<Node*> result;
 	BoundaryTraversal(_Root, result);
 	return result;
 }
 
-std::vector<Node*> BinaryTree::BoundaryTraversal(Node* node) {
+std::vector<Node*> BinarySearchTree::BoundaryTraversal(Node* node) {
 	std::vector<Node*> result;
 	BoundaryTraversal(node, result);
 	return result;
 }
 
-void BinaryTree::DiagonalTraversal(Node* node, std::vector<Node*>& result) {
+void BinarySearchTree::DiagonalTraversal(Node* node, std::vector<Node*>& result) {
 	if (node == nullptr) return;
 
 	std::queue<Node*> queue;
@@ -404,21 +404,21 @@ void BinaryTree::DiagonalTraversal(Node* node, std::vector<Node*>& result) {
 	}
 }
 
-std::vector<Node*> BinaryTree::DiagonalTraversal() const {
+std::vector<Node*> BinarySearchTree::DiagonalTraversal() const {
 	std::vector<Node*> result;
 	DiagonalTraversal(_Root, result);
 	return result;
 }
 
-std::vector<Node*> BinaryTree::DiagonalTraversal(Node* node) {
+std::vector<Node*> BinarySearchTree::DiagonalTraversal(Node* node) {
 	std::vector<Node*> result;
 	DiagonalTraversal(node, result);
 	return result;
 }
 
-void BinaryTree::RangeSearch(Node* node, int low, int high, std::vector<Node*>& result) {
+void BinarySearchTree::RangeSearch(Node* node, int low, int high, std::vector<Node*>& result) {
 	if (node == nullptr) return;
-	BinaryTree tree(node);
+	BinarySearchTree tree(node);
 
 	int minValue = tree.Minimum(node)->_key;
 	int maxValue = tree.Maximum(node)->_key;
@@ -436,19 +436,19 @@ void BinaryTree::RangeSearch(Node* node, int low, int high, std::vector<Node*>& 
 	}
 }
 
-std::vector<Node*> BinaryTree::RangeSearch(int low, int high) const {
+std::vector<Node*> BinarySearchTree::RangeSearch(int low, int high) const {
 	std::vector<Node*> result;
 	RangeSearch(_Root, low, high, result);
 	return result;
 }
 
-std::vector<Node*> BinaryTree::RangeSearch(Node* node, int low, int high) {
+std::vector<Node*> BinarySearchTree::RangeSearch(Node* node, int low, int high) {
 	std::vector<Node*> result;
 	RangeSearch(node, low, high, result);
 	return result;
 }
 
-std::string BinaryTree::toString(const std::vector<Node*>& nodes) const {
+std::string BinarySearchTree::toString(const std::vector<Node*>& nodes) const {
 	std::stringstream ss;
 
 	for (size_t i = 0; i < nodes.size(); ++i) {
@@ -461,7 +461,7 @@ std::string BinaryTree::toString(const std::vector<Node*>& nodes) const {
 	return ss.str();
 }
 
-std::string BinaryTree::toString(std::vector<Node*>& nodes) {
+std::string BinarySearchTree::toString(std::vector<Node*>& nodes) {
 	std::stringstream ss;
 
 	for (size_t i = 0; i < nodes.size(); ++i) {
@@ -474,47 +474,47 @@ std::string BinaryTree::toString(std::vector<Node*>& nodes) {
 	return ss.str();
 }
 
-std::string BinaryTree::toStringInorder() const {
+std::string BinarySearchTree::toStringInorder() const {
 	std::vector<Node*> nodes = InorderTraversal();
 	return toString(nodes);
 }
 
-std::string BinaryTree::toStringPreorder() const {
+std::string BinarySearchTree::toStringPreorder() const {
 	std::vector<Node*> nodes = PreorderTraversal();
 	return toString(nodes);
 }
 
-std::string BinaryTree::toStringPostorder() const {
+std::string BinarySearchTree::toStringPostorder() const {
 	std::vector<Node*> nodes = PostorderTraversal();
 	return toString(nodes);
 }
 
-std::string BinaryTree::toStringLevelOrder() const {
+std::string BinarySearchTree::toStringLevelOrder() const {
 	std::vector<Node*> nodes = LevelOrderTraversal();
 	return toString(nodes);
 }
 
-std::string BinaryTree::toStringReverseLevelOrder() const {
+std::string BinarySearchTree::toStringReverseLevelOrder() const {
 	std::vector<Node*> nodes = ReverseLevelOrderTraversal();
 	return toString(nodes);
 }
 
-std::string BinaryTree::toStringBoundary() const {
+std::string BinarySearchTree::toStringBoundary() const {
 	std::vector<Node*> nodes = BoundaryTraversal();
 	return toString(nodes);
 }
 
-std::string BinaryTree::toStringDiagonal() const {
+std::string BinarySearchTree::toStringDiagonal() const {
 	std::vector<Node*> nodes = DiagonalTraversal();
 	return toString(nodes);
 }
 
-std::string BinaryTree::toStringRange(int low, int high) const {
+std::string BinarySearchTree::toStringRange(int low, int high) const {
 	std::vector<Node*> nodes = RangeSearch(low, high);
 	return toString(nodes);
 }
 
-Node* BinaryTree::buildBalancedTree(std::vector<Node*>& nodes, int start, int end) {
+Node* BinarySearchTree::buildBalancedTree(std::vector<Node*>& nodes, int start, int end) {
 	if (start > end) {
 		return nullptr;
 	}
@@ -531,13 +531,13 @@ Node* BinaryTree::buildBalancedTree(std::vector<Node*>& nodes, int start, int en
 	return node;
 }
 
-void BinaryTree::balance() {
+void BinarySearchTree::balance() {
 	std::vector<Node*> nodes;
 	InorderTraversal(_Root, nodes);
 	_Root = buildBalancedTree(nodes, 0, static_cast<int>(nodes.size()) - 1);
 }
 
-void BinaryTree::visualize(Node* node, std::string prefix, bool isLeft) const {
+void BinarySearchTree::visualize(Node* node, std::string prefix, bool isLeft) const {
 	if (node != nullptr) {
 		std::cout << prefix;
 
@@ -549,17 +549,17 @@ void BinaryTree::visualize(Node* node, std::string prefix, bool isLeft) const {
 	}
 }
 
-void BinaryTree::visualize() const {
+void BinarySearchTree::visualize() const {
 	visualize(_Root, "", false);
 }
 
-int BinaryTree::getNodeCount(Node* node) {
+int BinarySearchTree::getNodeCount(Node* node) {
 	if (node == nullptr)
 		return 0;
 	return 1 + getNodeCount(node->_leftChild) + getNodeCount(node->_rightChild);
 }
 
-int BinaryTree::getDepth(Node* node) {
+int BinarySearchTree::getDepth(Node* node) {
 	if (node == nullptr) {
 		return 0;
 	}
@@ -568,30 +568,30 @@ int BinaryTree::getDepth(Node* node) {
 	return 1 + std::max(leftDepth, rightDepth);
 }
 
-int BinaryTree::getDepth() const {
+int BinarySearchTree::getDepth() const {
 	return getDepth(_Root);
 }
 
-bool BinaryTree::isFull() const {
+bool BinarySearchTree::isFull() const {
 	return isFull(_Root);
 }
 
-bool BinaryTree::isFull(Node* node) {
+bool BinarySearchTree::isFull(Node* node) {
 	if (node == nullptr)
 		return true;
 	if (isLeaf(node))
 		return true;
-	if((node->_leftChild != nullptr) && (node->_rightChild != nullptr))
+	if ((node->_leftChild != nullptr) && (node->_rightChild != nullptr))
 		return isFull(node->_leftChild) && isFull(node->_rightChild);
-		
+
 	return false;
 }
 
-bool BinaryTree::isPerfect() const {
+bool BinarySearchTree::isPerfect() const {
 	return isPerfect(_Root, getDepth(_Root), 0);
 }
 
-bool BinaryTree::isPerfect(Node* node, int depth, int level) {
+bool BinarySearchTree::isPerfect(Node* node, int depth, int level) {
 	if (node == nullptr)
 		return true;
 	if (isLeaf(node))
@@ -601,11 +601,11 @@ bool BinaryTree::isPerfect(Node* node, int depth, int level) {
 	return isPerfect(node->_leftChild, depth, level + 1) && isPerfect(node->_rightChild, depth, level + 1);
 }
 
-bool BinaryTree::isBalanced() const {
+bool BinarySearchTree::isBalanced() const {
 	return isBalanced(_Root) != -1;
 }
 
-int BinaryTree::isBalanced(Node* node) {
+int BinarySearchTree::isBalanced(Node* node) {
 	if (node == nullptr)
 		return 0;
 
@@ -619,11 +619,11 @@ int BinaryTree::isBalanced(Node* node) {
 	return std::max(leftHeight, rightHeight) + 1;
 }
 
-bool BinaryTree::isDegenerate() const {
+bool BinarySearchTree::isDegenerate() const {
 	return isDegenerate(_Root);
 }
 
-bool BinaryTree::isDegenerate(Node* node) {
+bool BinarySearchTree::isDegenerate(Node* node) {
 	if (node == nullptr)
 		return true;
 
@@ -633,11 +633,11 @@ bool BinaryTree::isDegenerate(Node* node) {
 	return isDegenerate(node->_leftChild) || isDegenerate(node->_rightChild);;
 }
 
-bool BinaryTree::isComplete() const {
+bool BinarySearchTree::isComplete() const {
 	return isComplete(_Root);
 }
 
-bool BinaryTree::isComplete(Node* node) {
+bool BinarySearchTree::isComplete(Node* node) {
 	if (node == nullptr)
 		return true;
 
@@ -653,7 +653,7 @@ bool BinaryTree::isComplete(Node* node) {
 			reachedEnd = true;
 		}
 		else {
-			if (reachedEnd) return false; 
+			if (reachedEnd) return false;
 
 			queue.push(current->_leftChild);
 			queue.push(current->_rightChild);
