@@ -1,4 +1,4 @@
-#include "BinaryTree.h"
+#include "BinarySearchTree.h"
 #include <iostream>
 #include <string>
 
@@ -63,7 +63,7 @@ void instructions() {
 const size_t CHOICE = 25;
 
 int main() {
-    BinaryTree tree;
+    BinarySearchTree tree;
     string input;
     int choice;
 
@@ -150,7 +150,7 @@ int main() {
             break;
         }
         case 5: { 
-            tree.~BinaryTree();  
+            tree.~BinarySearchTree();
             cout << "The tree has been cleared.\n";
             break;
         }
